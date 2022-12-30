@@ -44,8 +44,10 @@ import Data.Type.Equality
 import Data.Proxy
 
 
+-- | Type representing states of the azimuthal or angular momentum quantum number, l 
 data QL = SL | PL | DL | FL deriving (Eq, Ord, Enum)
 
+-- | Internal, singleton `QL` for reflection
 newtype QlSing (a :: QL) = QlSing QL 
 
 class KnownQL (a :: QL) where 
@@ -63,10 +65,12 @@ instance KnownQL DL where
 instance KnownQL FL where 
     qlSing = QlSing FL 
 
+-- | Reification of `QL` using `Proxy`
 qlVal :: forall q. KnownQL q => Proxy q -> QL
 qlVal _ = case (qlSing :: QlSing q) of 
             QlSing q -> q
 
+-- | Reification of `QL` independent of `Proxy`
 qlValI :: forall q. KnownQL q => QL
 qlValI = qlVal $ Proxy @q
 
@@ -76,13 +80,19 @@ instance Show QL where
     show DL = "d"
     show FL = "f"
 
+-- | Readable definition of the quantum spin number, ms 
 data QMS = Up | Down deriving (Show, Eq, Ord, Enum) 
 
+-- | Type representing a given sublevel
+-- For example, 1s2 = `SubL 1 SL 2` 
 data Sublevel = SubL Nat QL Nat deriving Eq  
 
 infixr 5 :<-:
+
+-- | Definition of electron configuration equivalent to a singly linked list 
 data EConf = Nucleus | Sublevel :<-: EConf  deriving Eq 
 
+-- | Reification of a `Sublevel` independent of `Proxy`
 slValI :: forall ec n l e. 
     ( KnownQL l
     , KnownNat n
@@ -91,14 +101,17 @@ slValI :: forall ec n l e.
     => Sublevel  
 slValI = SubL (fromIntegral . natVal $ Proxy @n) (qlValI @l) (fromIntegral . natVal $ Proxy @e)
 
+-- | Extract Principal Quantum Number (n) from `Sublevel` 
 getN :: Integral a => Sublevel -> a 
 getN = \case 
     SubL n _ _        -> fromIntegral n 
 
+-- | Extract Angular Momentum Quantum Number (l) from `Sublevel` 
 getL :: Sublevel -> QL 
 getL = \case 
     SubL _ l _        -> l 
 
+-- | Extract Magnetic Quantum Number (ml) from `Sublevel` 
 getML :: Sublevel -> Int
 getML = \case 
     SubL _ l e -> 
@@ -108,6 +121,7 @@ getML = \case
           DL -> fromIntegral $ (e - 1) `mod` 5 - 2 
           FL -> fromIntegral $ (e - 1) `mod` 7 - 3 
 
+-- | Extract Spin Quantum Number (ms) from `Sublevel` 
 getMS :: Sublevel -> QMS 
 getMS = \case  
     SubL _ l e -> 
@@ -117,6 +131,7 @@ getMS = \case
             DL -> toEnum . fromIntegral $ (e - 1) `div` 5 
             FL -> toEnum . fromIntegral $ (e - 1) `div` 7
 
+-- | foldr definition as EConf cannot have a Foldable instance 
 foldrEC :: (Sublevel -> b -> b) -> b -> EConf -> b 
 foldrEC f init = \case 
     ec :<-: ecs -> foldrEC f (f ec init) ecs 
@@ -131,7 +146,8 @@ instance Show EConf where
     show (ec1 :<-: ec2)     = show ec2 ++ "|" ++ show ec1
 
 
--- Way too slow for elements past Na
+-- | Type level conversion of an atomic number to electron configuration 
+-- Far too slow for elements past Sodium 
 type family ANumToEConf (n :: Nat) :: EConf  where 
     ANumToEConf 0 = TypeError (Text "No Atomic # 0")
     ANumToEConf 1 = SubL 1 SL 1 :<-: Nucleus 
@@ -166,9 +182,11 @@ type family AN2ECHelper (z :: Nat) (st :: EConf) :: EConf where
            (AN2ECHelper (z - 1) (SubL n FL (e + 1) :<-: rem))
            (AN2ECHelper (z - 1) (SubL (n + 1) DL 1 :<-: (SubL n FL 14 :<-: rem)))
 
+-- | Type-level equivalent of `getN` 
 type family GetN (ec :: Sublevel) :: Nat where 
     GetN (SubL n _ _)  = n 
 
+-- | Shortcut type-level conversion of atomic number to PQN 
 type family ANum2PQN (z :: Nat) :: Nat where 
     ANum2PQN 1 = 1 
     ANum2PQN 2 = 1
@@ -176,6 +194,10 @@ type family ANum2PQN (z :: Nat) :: Nat where
     ANum2PQN 4 = 2
     ANum2PQN z = GetN (ANumLastSL z (SubL 2 SL 2))
 
+-- | Type-level conversion of atomic number to final sublevel, equivalent to 
+-- @ case ANumToEConf z of 
+--      sl :<-: ec -> sl @ 
+-- Without extra expense 
 type family ANumLastSL (z :: Nat) (ec :: Sublevel) :: Sublevel where 
     ANumLastSL 0 st = st
     ANumLastSL z (SubL n SL e) = 
@@ -202,6 +224,7 @@ type family ANumLastSL (z :: Nat) (ec :: Sublevel) :: Sublevel where
            (ANumLastSL (z - 1) (SubL n FL (e + 1)))
            (ANumLastSL (z - 1) (SubL (n + 1) DL 1))
 
+-- | Value-level equivalent of `ANumToEConf` 
 anumToEConf :: Int -> EConf 
 anumToEConf = \case 
     1 -> SubL 1 SL 1 :<-: Nucleus
@@ -210,6 +233,8 @@ anumToEConf = \case
     4 -> SubL 2 SL 2 :<-: SubL 1 SL 2 :<-: Nucleus 
     a -> addElectrons (a - 4) (anumToEConf 4) 
 
+-- | Adding electrons to electron configuration
+-- Useful for anion formation or stepping through elements 
 addElectrons :: Int -> EConf -> EConf 
 addElectrons 0 = id 
 addElectrons n = \case 
@@ -217,6 +242,9 @@ addElectrons n = \case
     a       -> foldr (\n acc@(b:<-:bs) -> let nx = addElectronsSL n b in nx :<-: (if getL nx == getL b then bs else acc)) a 
              $ replicate n 1
 
+-- | Dropping electrons from an electron configuration 
+-- Useful for cation formation or stepping through elements 
+-- Yields no warning regarding being left with just the nucleus 
 dropElectrons :: Int -> EConf -> EConf 
 dropElectrons 0 = id 
 dropElectrons n = \case 
@@ -224,18 +252,23 @@ dropElectrons n = \case
     SubL _ _ 1 :<-: ec -> dropElectrons (n - 1) ec 
     SubL p l a :<-: ec -> dropElectrons (n - 1) $ SubL p l (a-1) :<-: ec 
 
+-- | Formation of an ion electron configuration from `Int` charge and electron configuration 
 formIon :: Int -> EConf -> EConf
 formIon n 
     | n == 0 = id 
     | n <  0 = dropElectrons (negate n)
     | n >  0 = addElectrons  n 
 
+-- | Formation of an ion yielding just the final `Sublevel`
+-- Any `Left` value indicates just `Nucleus` 
 formIonSL :: Int -> Sublevel -> Either EConf Sublevel 
 formIonSL n 
     | n == 0 = Right 
     | n <  0 = dropElectronsSL (negate n)
     | n >  0 = Right . addElectronsSL  n 
 
+-- | `anumToEConf` yielding just the final `Sublevel`
+-- Value equivalent of `ANumLastSL`
 anumToSublevel :: Int -> Sublevel 
 anumToSublevel = \case 
     1 -> SubL 1 SL 1
@@ -244,6 +277,7 @@ anumToSublevel = \case
     4 -> SubL 2 SL 2  
     a -> addElectronsSL (a - 4) (anumToSublevel 4) 
 
+-- | `addElectrons` yielding just the final `Sublevel` 
 addElectronsSL :: Int -> Sublevel -> Sublevel
 addElectronsSL 0 a = a 
 addElectronsSL z (SubL n SL e) 
@@ -261,6 +295,8 @@ addElectronsSL z (SubL n FL e) =
     if e <= 13 then addElectronsSL (z - 1) $ SubL n FL (e + 1)
                else addElectronsSL (z - 1) $ SubL (n + 1) DL 1
 
+-- | `dropElectrons` yielding just the final `Sublevel` 
+-- `Left` indicates just `Nucleus` 
 dropElectronsSL :: Int -> Sublevel -> Either EConf Sublevel  
 dropElectronsSL 0 = Right 
 dropElectronsSL n = \case 
@@ -274,11 +310,13 @@ dropElectronsSL n = \case
     SubL p FL 1     -> dropElectronsSL (n-1) $ SubL (p+2) SL 2 
     SubL p l  e | e > 1 -> dropElectronsSL (n - 1) (SubL p l $ e - 1)
 
+-- | Unwraps an `EConf` to `Nucleus` or the final `Sublevel` 
 lastSubL :: EConf -> Either EConf Sublevel 
 lastSubL = \case 
     (ec :<-: ecs) -> Right ec
     Nucleus  -> Left Nucleus
 
+-- | Should a `DL` or `FL` sublevel lower the PQN, returns the final `SL` sublevel
 peakN :: EConf -> Either EConf Sublevel 
 peakN = \case 
     ec@(SubL _ l _) :<-: ecs -> if l == PL || l == SL then Right ec else peakN ecs     
