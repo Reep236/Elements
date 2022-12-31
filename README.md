@@ -20,11 +20,11 @@ Has two child modules which apply Elements on the type- and value- level
 
 ## Slaters.Safe ## 
 
-    "Safe" computation, reification from type-level values. Enables compile-time type errors. Likely to be removed due to negligible benefit. 
+    "Safe" computation, reification from type-level values. Enables compile-time type errors. Likely to be removed due to negligible benefit. 
 
 ## Slaters.Unsafe ##
 
-    "Unsafe" computation, value-level. Additionally includes computation for ionic radii. 
+    "Unsafe" computation, value-level. Additionally includes computation for ionic radii. 
 
 # Compounds # 
 

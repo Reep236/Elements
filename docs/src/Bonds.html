@@ -122,15 +122,16 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><span class="hs-number">4.184</span></span><span>
 </span><span id="line-50"></span><span>
 </span><span id="line-51"></span><span class="hs-comment">-- | Single bond energy based on Pauling electronegativity difference for dissociation energy </span><span>
-</span><span id="line-52"></span><span class="hs-comment">-- &gt; Ed(AB) = 0.5(Ed(AA) + Ed(BB)) + (XA - XB)^2</span><span>
-</span><span id="line-53"></span><span class="hs-comment">-- Either very close or not at all </span><span>
-</span><span id="line-54"></span><span id="local-6989586621679040014"><span class="annot"><a href="Bonds.html#singBondE"><span class="hs-identifier hs-type">singBondE</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679040014"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Elements.html#Element"><span class="hs-identifier hs-type">Element</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Elements.html#Element"><span class="hs-identifier hs-type">Element</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040014"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
-</span><span id="line-55"></span><span id="singBondE"><span class="annot"><span class="annottext">singBondE :: forall a. Floating a =&gt; Element -&gt; Element -&gt; a
+</span><span id="line-52"></span><span class="hs-comment">--</span><span>
+</span><span id="line-53"></span><span class="hs-comment">-- &gt; Ed(AB) = 0.5(Ed(AA) + Ed(BB)) + (XA - XB)^2</span><span>
+</span><span id="line-54"></span><span class="hs-comment">-- Either very close or not at all </span><span>
+</span><span id="line-55"></span><span id="local-6989586621679040014"><span class="annot"><a href="Bonds.html#singBondE"><span class="hs-identifier hs-type">singBondE</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679040014"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Elements.html#Element"><span class="hs-identifier hs-type">Element</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="Elements.html#Element"><span class="hs-identifier hs-type">Element</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040014"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
+</span><span id="line-56"></span><span id="singBondE"><span class="annot"><span class="annottext">singBondE :: forall a. Floating a =&gt; Element -&gt; Element -&gt; a
 </span><a href="Bonds.html#singBondE"><span class="hs-identifier hs-var hs-var">singBondE</span></a></span></span><span> </span><span id="local-6989586621679039835"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039835"><span class="hs-identifier hs-var">e1</span></a></span></span><span> </span><span id="local-6989586621679039834"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039834"><span class="hs-identifier hs-var">e2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a
 </span><a href="Bonds.html#eV2kJ"><span class="hs-identifier hs-var">eV2kJ</span></a></span><span> </span><span>
-</span><span id="line-56"></span><span>                </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span id="line-57"></span><span>                </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a
 </span><a href="Bonds.html#kJ2eV"><span class="hs-identifier hs-var">kJ2eV</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Element -&gt; a
 </span><a href="Bonds.html#reflexBondE"><span class="hs-identifier hs-var">reflexBondE</span></a></span><span> </span><span class="annot"><span class="annottext">Element
@@ -141,7 +142,7 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039834"><span class="hs-identifier hs-var">e2</span></a></span><span class="hs-special">)</span><span class="hs-special">)</span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">/</span></span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">2</span></span><span>
-</span><span id="line-57"></span><span>                </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span id="line-58"></span><span>                </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">+</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Element -&gt; a
 </span><a href="Slaters.Unsafe.html#eNeg%27"><span class="hs-identifier hs-var">eNeg'</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039835"><span class="hs-identifier hs-var">e1</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
@@ -150,19 +151,19 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039834"><span class="hs-identifier hs-var">e2</span></a></span><span class="hs-special">)</span><span class="annot"><span class="annottext">forall a b. (Fractional a, Integral b) =&gt; a -&gt; b -&gt; a
 </span><span class="hs-operator hs-var">^^</span></span><span class="annot"><span class="annottext">Integer
 </span><span class="hs-number">2</span></span><span>
-</span><span id="line-58"></span><span>
-</span><span id="line-59"></span><span class="hs-comment">-- | Higher order bond energies, small dataset used for a regression between single bond energy and bond length </span><span>
-</span><span id="line-60"></span><span id="local-6989586621679039831"><span class="annot"><a href="Bonds.html#bondEnergy"><span class="hs-identifier hs-type">bondEnergy</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679039831"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679039831"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
-</span><span id="line-61"></span><span id="bondEnergy"><span class="annot"><span class="annottext">bondEnergy :: forall a. Floating a =&gt; Bond -&gt; a
+</span><span id="line-59"></span><span>
+</span><span id="line-60"></span><span class="hs-comment">-- | Higher order bond energies, small dataset used for a regression between single bond energy and bond length </span><span>
+</span><span id="line-61"></span><span id="local-6989586621679039831"><span class="annot"><a href="Bonds.html#bondEnergy"><span class="hs-identifier hs-type">bondEnergy</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679039831"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679039831"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
+</span><span id="line-62"></span><span id="bondEnergy"><span class="annot"><span class="annottext">bondEnergy :: forall a. Floating a =&gt; Bond -&gt; a
 </span><a href="Bonds.html#bondEnergy"><span class="hs-identifier hs-var hs-var">bondEnergy</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span> </span><span>
-</span><span id="line-62"></span><span>    </span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><span id="line-63"></span><span>    </span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">1</span></span><span> </span><span id="local-6989586621679039801"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039801"><span class="hs-identifier hs-var">e1</span></a></span></span><span> </span><span id="local-6989586621679039800"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039800"><span class="hs-identifier hs-var">e2</span></a></span></span><span>     </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Element -&gt; Element -&gt; a
 </span><a href="Bonds.html#singBondE"><span class="hs-identifier hs-var">singBondE</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039801"><span class="hs-identifier hs-var">e1</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039800"><span class="hs-identifier hs-var">e2</span></a></span><span> </span><span>
-</span><span id="line-63"></span><span>    </span><span id="local-6989586621679039799"><span class="annot"><span class="annottext">b :: Bond
+</span><span id="line-64"></span><span>    </span><span id="local-6989586621679039799"><span class="annot"><span class="annottext">b :: Bond
 </span><a href="#local-6989586621679039799"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">2</span></span><span> </span><span id="local-6989586621679039798"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039798"><span class="hs-identifier hs-var">e1</span></a></span></span><span> </span><span id="local-6989586621679039797"><span class="annot"><span class="annottext">Element
@@ -173,20 +174,20 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039797"><span class="hs-identifier hs-var">e2</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">1857.55285277</span></span><span class="hs-special">)</span><span>
-</span><span id="line-64"></span><span>                      </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span id="line-65"></span><span>                      </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Bond -&gt; a
 </span><a href="Bonds.html#bondLength"><span class="hs-identifier hs-var">bondLength</span></a></span><span> </span><span class="annot"><span class="annottext">Bond
 </span><a href="#local-6989586621679039799"><span class="hs-identifier hs-var">b</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">**</span></span><span> </span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">1.34627103448</span></span><span>
-</span><span id="line-65"></span><span>    </span><span id="local-6989586621679039796"><span class="annot"><span class="annottext">b :: Bond
+</span><span id="line-66"></span><span>    </span><span id="local-6989586621679039796"><span class="annot"><span class="annottext">b :: Bond
 </span><a href="#local-6989586621679039796"><span class="hs-identifier hs-var">b</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span> </span><span class="annot"><span class="annottext">Int
 </span><span class="hs-number">3</span></span><span> </span><span id="local-6989586621679039795"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039795"><span class="hs-identifier hs-var">e1</span></a></span></span><span> </span><span id="local-6989586621679039794"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039794"><span class="hs-identifier hs-var">e2</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">(+)</span></span><span> </span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">387.249296239</span></span><span>
-</span><span id="line-66"></span><span>                      </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span id="line-67"></span><span>                      </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">(/)</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Element -&gt; Element -&gt; a
 </span><a href="Bonds.html#singBondE"><span class="hs-identifier hs-var">singBondE</span></a></span><span> </span><span class="annot"><span class="annottext">Element
@@ -194,20 +195,20 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039794"><span class="hs-identifier hs-var">e2</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">5.47446611285e7</span></span><span class="hs-special">)</span><span>
-</span><span id="line-67"></span><span>                      </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span id="line-68"></span><span>                      </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; Bond -&gt; a
 </span><a href="Bonds.html#bondLength"><span class="hs-identifier hs-var">bondLength</span></a></span><span> </span><span class="annot"><span class="annottext">Bond
 </span><a href="#local-6989586621679039796"><span class="hs-identifier hs-var">b</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a -&gt; a
 </span><span class="hs-operator hs-var">**</span></span><span> </span><span class="annot"><span class="annottext">a
 </span><span class="hs-number">3.41631365146</span></span><span>
-</span><span id="line-68"></span><span>    </span><span class="annot"><span class="annottext">Bond
+</span><span id="line-69"></span><span>    </span><span class="annot"><span class="annottext">Bond
 </span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall a. HasCallStack =&gt; String -&gt; a
 </span><span class="hs-identifier hs-var">error</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Variable bond order not implemented&quot;</span></span><span>
-</span><span id="line-69"></span><span>
-</span><span id="line-70"></span><span class="hs-comment">-- | Sum of `bondEnergy`/ies within some `Molecular` compound </span><span>
-</span><span id="line-71"></span><span id="local-6989586621679040005"><span id="local-6989586621679040007"><span class="annot"><a href="Bonds.html#totalBondEnergy"><span class="hs-identifier hs-type">totalBondEnergy</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Molecular"><span class="hs-identifier hs-type">Molecular</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679040007"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679040005"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040007"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040005"><span class="hs-identifier hs-type">a</span></a></span></span></span><span> </span><span>
-</span><span id="line-72"></span><span id="totalBondEnergy"><span class="annot"><span class="annottext">totalBondEnergy :: forall m a. (Molecular m, Floating a) =&gt; m -&gt; a
+</span><span id="line-70"></span><span>
+</span><span id="line-71"></span><span class="hs-comment">-- | Sum of `bondEnergy`/ies within some `Molecular` compound </span><span>
+</span><span id="line-72"></span><span id="local-6989586621679040005"><span id="local-6989586621679040007"><span class="annot"><a href="Bonds.html#totalBondEnergy"><span class="hs-identifier hs-type">totalBondEnergy</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Molecular"><span class="hs-identifier hs-type">Molecular</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679040007"><span class="hs-identifier hs-type">m</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679040005"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040007"><span class="hs-identifier hs-type">m</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679040005"><span class="hs-identifier hs-type">a</span></a></span></span></span><span> </span><span>
+</span><span id="line-73"></span><span id="totalBondEnergy"><span class="annot"><span class="annottext">totalBondEnergy :: forall m a. (Molecular m, Floating a) =&gt; m -&gt; a
 </span><a href="Bonds.html#totalBondEnergy"><span class="hs-identifier hs-var hs-var">totalBondEnergy</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall (t :: * -&gt; *) a. (Foldable t, Num a) =&gt; t a -&gt; a
 </span><span class="hs-identifier hs-var">sum</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; [a] -&gt; [b]
@@ -217,17 +218,17 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
 </span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Molecular a =&gt; a -&gt; Molecule
 </span><a href="Compounds.html#asMolecule"><span class="hs-identifier hs-var">asMolecule</span></a></span><span> </span><span>
-</span><span id="line-73"></span><span>
-</span><span id="line-74"></span><span class="hs-comment">-- | Break apart some `Molecule` into component `Bond`s</span><span>
-</span><span id="line-75"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-type">shatterToBonds</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Compounds.html#Molecule"><span class="hs-identifier hs-type">Molecule</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span class="hs-special">]</span><span> </span><span>
-</span><span id="line-76"></span><span id="shatterToBonds"><span class="annot"><span class="annottext">shatterToBonds :: Molecule -&gt; [Bond]
+</span><span id="line-74"></span><span>
+</span><span id="line-75"></span><span class="hs-comment">-- | Break apart some `Molecule` into component `Bond`s</span><span>
+</span><span id="line-76"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-type">shatterToBonds</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><a href="Compounds.html#Molecule"><span class="hs-identifier hs-type">Molecule</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">[</span><span class="annot"><a href="Bonds.html#Bond"><span class="hs-identifier hs-type">Bond</span></a></span><span class="hs-special">]</span><span> </span><span>
+</span><span id="line-77"></span><span id="shatterToBonds"><span class="annot"><span class="annottext">shatterToBonds :: Molecule -&gt; [Bond]
 </span><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var hs-var">shatterToBonds</span></a></span></span><span> </span><span id="local-6989586621679039780"><span class="annot"><span class="annottext">a :: Molecule
 </span><a href="#local-6989586621679039780"><span class="hs-identifier hs-var">a</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Terminating"><span class="hs-identifier hs-type">Terminating</span></a></span><span> </span><span class="annot"><span class="annottext">Nat
 </span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">Charge
 </span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679039778"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span id="local-6989586621679039777"><span class="annot"><span class="annottext">Nat
 </span><a href="#local-6989586621679039777"><span class="hs-identifier hs-var">n</span></a></span></span><span class="hs-special">)</span><span> </span><span>
-</span><span id="line-77"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
+</span><span id="line-78"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#H"><span class="hs-identifier hs-var">H</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Int -&gt; Element -&gt; Element -&gt; Bond
@@ -235,7 +236,7 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><span class="hs-number">1</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#H"><span class="hs-identifier hs-var">H</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#H"><span class="hs-identifier hs-var">H</span></a></span><span class="hs-special">]</span><span>
-</span><span id="line-78"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
+</span><span id="line-79"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#S"><span class="hs-identifier hs-var">S</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Int -&gt; a -&gt; [a]
@@ -246,7 +247,7 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><span class="hs-number">1</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#S"><span class="hs-identifier hs-var">S</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#S"><span class="hs-identifier hs-var">S</span></a></span><span>   </span><span>
-</span><span id="line-79"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
+</span><span id="line-80"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#P"><span class="hs-identifier hs-var">P</span></a></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Int -&gt; a -&gt; [a]
@@ -257,7 +258,7 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><span class="hs-number">1</span></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#P"><span class="hs-identifier hs-var">P</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="Elements.html#P"><span class="hs-identifier hs-var">P</span></a></span><span>
-</span><span id="line-80"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span id="line-81"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
 </span><a href="#local-6989586621679039777"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
 </span><span class="hs-number">2</span></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="annot"><span class="annottext">Int -&gt; Element -&gt; Element -&gt; Bond
@@ -268,26 +269,26 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039778"><span class="hs-identifier hs-var">e</span></a></span><span class="hs-special">]</span><span> </span><span>
-</span><span id="line-81"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span id="line-82"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
 </span><a href="#local-6989586621679039777"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
 </span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
 </span><span class="hs-number">1</span></span><span>    </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span> </span><span>
-</span><span id="line-82"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
+</span><span id="line-83"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Bool
 </span><span class="hs-identifier hs-var">otherwise</span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. HasCallStack =&gt; String -&gt; a
 </span><span class="hs-identifier hs-var">error</span></span><span> </span><span class="annot"><span class="annottext">String
 </span><span class="hs-string">&quot;Impossible! Invalid molecule&quot;</span></span><span>
-</span><span id="line-83"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Terminating"><span class="hs-identifier hs-type">Terminating</span></a></span><span> </span><span class="hs-special">{</span><span class="hs-special">}</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span>
-</span><span id="line-84"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Central"><span class="hs-identifier hs-type">Central</span></a></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span id="line-84"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Terminating"><span class="hs-identifier hs-type">Terminating</span></a></span><span> </span><span class="hs-special">{</span><span class="hs-special">}</span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-special">[</span><span class="hs-special">]</span><span>
+</span><span id="line-85"></span><span class="annot"><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Central"><span class="hs-identifier hs-type">Central</span></a></span><span> </span><span class="annot"><span class="annottext">Nat
 </span><span class="hs-identifier">_</span></span><span> </span><span class="annot"><span class="annottext">Charge
 </span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679039771"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039771"><span class="hs-identifier hs-var">ep</span></a></span></span><span> </span><span id="local-6989586621679039770"><span class="annot"><span class="annottext">[Molecule]
 </span><a href="#local-6989586621679039770"><span class="hs-identifier hs-var">ms</span></a></span></span><span class="hs-special">)</span><span> </span><span>
-</span><span id="line-85"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
+</span><span id="line-86"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a b c. (a -&gt; b -&gt; c) -&gt; b -&gt; a -&gt; c
 </span><span class="hs-identifier hs-var">flip</span></span><span> </span><span class="annot"><span class="annottext">forall (t :: * -&gt; *) a b. Foldable t =&gt; (a -&gt; [b]) -&gt; t a -&gt; [b]
 </span><span class="hs-identifier hs-var">concatMap</span></span><span> </span><span class="annot"><span class="annottext">[Molecule]
 </span><a href="#local-6989586621679039770"><span class="hs-identifier hs-var">ms</span></a></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
 </span><span class="hs-operator hs-var">$</span></span><span> </span><span class="hs-glyph">\</span><span class="hs-glyph">case</span><span> </span><span>
-</span><span id="line-86"></span><span>        </span><span class="annot"><a href="Compounds.html#Terminating"><span class="hs-identifier hs-type">Terminating</span></a></span><span> </span><span id="local-6989586621679039767"><span class="annot"><span class="annottext">Nat
+</span><span id="line-87"></span><span>        </span><span class="annot"><a href="Compounds.html#Terminating"><span class="hs-identifier hs-type">Terminating</span></a></span><span> </span><span id="local-6989586621679039767"><span class="annot"><span class="annottext">Nat
 </span><a href="#local-6989586621679039767"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span class="annot"><span class="annottext">Charge
 </span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679039766"><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039766"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span id="local-6989586621679039765"><span class="annot"><span class="annottext">Nat
@@ -301,7 +302,7 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><a href="#local-6989586621679039767"><span class="hs-identifier hs-var">b</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039771"><span class="hs-identifier hs-var">ep</span></a></span><span> </span><span class="annot"><span class="annottext">Element
 </span><a href="#local-6989586621679039766"><span class="hs-identifier hs-var">e</span></a></span><span>
-</span><span id="line-87"></span><span>        </span><span id="local-6989586621679039764"><span class="annot"><span class="annottext">c :: Molecule
+</span><span id="line-88"></span><span>        </span><span id="local-6989586621679039764"><span class="annot"><span class="annottext">c :: Molecule
 </span><a href="#local-6989586621679039764"><span class="hs-identifier hs-var">c</span></a></span></span><span class="hs-glyph">@</span><span class="hs-special">(</span><span class="annot"><a href="Compounds.html#Central"><span class="hs-identifier hs-type">Central</span></a></span><span> </span><span id="local-6989586621679039763"><span class="annot"><span class="annottext">Nat
 </span><a href="#local-6989586621679039763"><span class="hs-identifier hs-var">b</span></a></span></span><span> </span><span class="annot"><span class="annottext">Charge
 </span><span class="hs-identifier">_</span></span><span> </span><span id="local-6989586621679039762"><span class="annot"><span class="annottext">Element
@@ -315,4 +316,4 @@ $c== :: Bond -&gt; Bond -&gt; Bool
 </span><span class="hs-glyph hs-var">:</span></span><span> </span><span class="annot"><span class="annottext">Molecule -&gt; [Bond]
 </span><a href="Bonds.html#shatterToBonds"><span class="hs-identifier hs-var">shatterToBonds</span></a></span><span> </span><span class="annot"><span class="annottext">Molecule
 </span><a href="#local-6989586621679039764"><span class="hs-identifier hs-var">c</span></a></span><span>
-</span><span id="line-88"></span></pre></body></html>
+</span><span id="line-89"></span></pre></body></html>

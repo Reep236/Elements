@@ -49,6 +49,7 @@ kCal2kJ :: Floating a => a -> a
 kCal2kJ = (*) 4.184
 
 -- | Single bond energy based on Pauling electronegativity difference for dissociation energy 
+--
 -- > Ed(AB) = 0.5(Ed(AA) + Ed(BB)) + (XA - XB)^2
 -- Either very close or not at all 
 singBondE :: Floating a => Element -> Element -> a 

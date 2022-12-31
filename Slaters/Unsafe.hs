@@ -19,6 +19,7 @@ effPQN = \case
            7 -> 4.3
 
 -- | Orbital Exponent 
+--
 -- > (Z-S)/n* 
 orbitalExp :: forall a. Fractional a => Element -> a 
 orbitalExp e = (zEff e)/(effPQN . getN . anumToSublevel . toAtomic $ e)
