@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Slaters</span><span> </span><span class="hs-keyword">where</span><span> </span><span>
+</span><span id="line-2"></span><span>
+</span><span id="line-3"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Elements.html"><span class="hs-identifier">Elements</span></a></span><span>
+</span><span id="line-4"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="ElectronConf.html"><span class="hs-identifier">ElectronConf</span></a></span><span> </span><span>
+</span><span id="line-5"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><span class="hs-identifier">GHC.TypeLits</span></span><span>
+</span><span id="line-6"></span><span>
+</span><span id="line-7"></span><span class="hs-comment">-- | Yields screening constant based on a value-level Electron Configuration using Slater's Rules </span><span>
+</span><span id="line-8"></span><span class="annot"><a href="Slaters.html#screenConst"><span class="hs-identifier hs-type">screenConst</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679038551"><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span></span><span class="hs-operator">.</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Fractional</span></span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="ElectronConf.html#EConf"><span class="hs-identifier hs-type">EConf</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span>
+</span><span id="line-9"></span><span id="screenConst"><span class="annot"><span class="annottext">screenConst :: forall a. Fractional a =&gt; EConf -&gt; a
+</span><a href="Slaters.html#screenConst"><span class="hs-identifier hs-var hs-var">screenConst</span></a></span></span><span> </span><span id="local-6989586621679038435"><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span>
+</span><span id="line-10"></span><span>    </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">EConf -&gt; Either EConf Sublevel
+</span><a href="ElectronConf.html#peakN"><span class="hs-identifier hs-var">peakN</span></a></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span><span> </span><span class="hs-keyword">of</span><span> </span><span>
+</span><span id="line-11"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="ElectronConf.html#Nucleus"><span class="hs-identifier hs-var">Nucleus</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span> </span><span>
+</span><span id="line-12"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span class="hs-number">1</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#SL"><span class="hs-identifier hs-var">SL</span></a></span><span> </span><span id="local-6989586621679038430"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038430"><span class="hs-identifier hs-var">e</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.3</span></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038430"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span> </span><span>
+</span><span id="line-13"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038428"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038428"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#SL"><span class="hs-identifier hs-var">SL</span></a></span><span> </span><span id="local-6989586621679038427"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038427"><span class="hs-identifier hs-var">e</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall b. (Sublevel -&gt; b -&gt; b) -&gt; b -&gt; EConf -&gt; b
+</span><a href="ElectronConf.html#foldrEC"><span class="hs-identifier hs-var">foldrEC</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Nat, QL) -&gt; (a, a, a, a) -&gt; Sublevel -&gt; a -&gt; a
+</span><a href="#local-6989586621679038425"><span class="hs-identifier hs-var">evalEff</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038428"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#SL"><span class="hs-identifier hs-var">SL</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.35</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.85</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span><span>
+</span><span id="line-14"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038424"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038424"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#PL"><span class="hs-identifier hs-var">PL</span></a></span><span> </span><span id="local-6989586621679038422"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038422"><span class="hs-identifier hs-var">e</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall b. (Sublevel -&gt; b -&gt; b) -&gt; b -&gt; EConf -&gt; b
+</span><a href="ElectronConf.html#foldrEC"><span class="hs-identifier hs-var">foldrEC</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Nat, QL) -&gt; (a, a, a, a) -&gt; Sublevel -&gt; a -&gt; a
+</span><a href="#local-6989586621679038425"><span class="hs-identifier hs-var">evalEff</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038424"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#PL"><span class="hs-identifier hs-var">PL</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.35</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.85</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span><span>
+</span><span id="line-15"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038421"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038421"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#DL"><span class="hs-identifier hs-var">DL</span></a></span><span> </span><span id="local-6989586621679038419"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038419"><span class="hs-identifier hs-var">e</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall b. (Sublevel -&gt; b -&gt; b) -&gt; b -&gt; EConf -&gt; b
+</span><a href="ElectronConf.html#foldrEC"><span class="hs-identifier hs-var">foldrEC</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Nat, QL) -&gt; (a, a, a, a) -&gt; Sublevel -&gt; a -&gt; a
+</span><a href="#local-6989586621679038425"><span class="hs-identifier hs-var">evalEff</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038421"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#DL"><span class="hs-identifier hs-var">DL</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.35</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span>   </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span><span>
+</span><span id="line-16"></span><span>      </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038418"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038418"><span class="hs-identifier hs-var">n</span></a></span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#FL"><span class="hs-identifier hs-var">FL</span></a></span><span> </span><span id="local-6989586621679038416"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038416"><span class="hs-identifier hs-var">e</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall b. (Sublevel -&gt; b -&gt; b) -&gt; b -&gt; EConf -&gt; b
+</span><a href="ElectronConf.html#foldrEC"><span class="hs-identifier hs-var">foldrEC</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">(Nat, QL) -&gt; (a, a, a, a) -&gt; Sublevel -&gt; a -&gt; a
+</span><a href="#local-6989586621679038425"><span class="hs-identifier hs-var">evalEff</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038418"><span class="hs-identifier hs-var">n</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#FL"><span class="hs-identifier hs-var">FL</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.35</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span>   </span><span class="hs-special">,</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0</span></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038435"><span class="hs-identifier hs-var">ec</span></a></span><span>
+</span><span id="line-17"></span><span>    </span><span class="hs-keyword">where</span><span> </span><span>
+</span><span id="line-18"></span><span>        </span><span class="annot"><a href="#local-6989586621679038425"><span class="hs-identifier hs-type">evalEff</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-special">(</span><span class="annot"><span class="hs-identifier hs-type">Natural</span></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="ElectronConf.html#QL"><span class="hs-identifier hs-type">QL</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="ElectronConf.html#Sublevel"><span class="hs-identifier hs-type">Sublevel</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038551"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span>
+</span><span id="line-19"></span><span>        </span><span id="local-6989586621679038425"><span class="annot"><span class="annottext">evalEff :: (Nat, QL) -&gt; (a, a, a, a) -&gt; Sublevel -&gt; a -&gt; a
+</span><a href="#local-6989586621679038425"><span class="hs-identifier hs-var hs-var">evalEff</span></a></span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679038415"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038415"><span class="hs-identifier hs-var">n</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679038414"><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038414"><span class="hs-identifier hs-var">l</span></a></span></span><span class="hs-special">)</span><span> </span><span class="hs-special">(</span><span id="local-6989586621679038413"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038413"><span class="hs-identifier hs-var">sameSL</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679038412"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038412"><span class="hs-identifier hs-var">lowerL</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679038411"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038411"><span class="hs-identifier hs-var">nSub1</span></a></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679038410"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038410"><span class="hs-identifier hs-var">nSub2</span></a></span></span><span class="hs-special">)</span><span> </span><span id="local-6989586621679038409"><span class="annot"><span class="annottext">Sublevel
+</span><a href="#local-6989586621679038409"><span class="hs-identifier hs-var">ec</span></a></span></span><span> </span><span id="local-6989586621679038408"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span></span><span> </span><span>
+</span><span id="line-20"></span><span>          </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">Sublevel
+</span><a href="#local-6989586621679038409"><span class="hs-identifier hs-var">ec</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-21"></span><span>              </span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038407"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038407"><span class="hs-identifier hs-var">n'</span></a></span></span><span> </span><span id="local-6989586621679038406"><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038406"><span class="hs-identifier hs-var">l'</span></a></span></span><span> </span><span id="local-6989586621679038405"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038405"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038407"><span class="hs-identifier hs-var">n'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038415"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><span class="hs-operator hs-var">&amp;&amp;</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038406"><span class="hs-identifier hs-var">l'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038414"><span class="hs-identifier hs-var">l</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038413"><span class="hs-identifier hs-var">sameSL</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038405"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span class="hs-number">1</span></span><span class="hs-special">)</span><span> </span><span>
+</span><span id="line-22"></span><span>              </span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038402"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038402"><span class="hs-identifier hs-var">n'</span></a></span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#SL"><span class="hs-identifier hs-var">SL</span></a></span><span> </span><span id="local-6989586621679038401"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038401"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038402"><span class="hs-identifier hs-var">n'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038415"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><span class="hs-operator hs-var">&amp;&amp;</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="ElectronConf.html#PL"><span class="hs-identifier hs-var">PL</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038414"><span class="hs-identifier hs-var">l</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038413"><span class="hs-identifier hs-var">sameSL</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038401"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span>
+</span><span id="line-23"></span><span>              </span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038400"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038400"><span class="hs-identifier hs-var">n'</span></a></span></span><span> </span><span id="local-6989586621679038399"><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038399"><span class="hs-identifier hs-var">l'</span></a></span></span><span> </span><span id="local-6989586621679038398"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038398"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038400"><span class="hs-identifier hs-var">n'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038415"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">Bool -&gt; Bool -&gt; Bool
+</span><span class="hs-operator hs-var">&amp;&amp;</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038399"><span class="hs-identifier hs-var">l'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Ord a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">&lt;</span></span><span> </span><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038414"><span class="hs-identifier hs-var">l</span></a></span><span>  </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038412"><span class="hs-identifier hs-var">lowerL</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038398"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span>
+</span><span id="line-24"></span><span>              </span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038396"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038396"><span class="hs-identifier hs-var">n'</span></a></span></span><span> </span><span id="local-6989586621679038395"><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038395"><span class="hs-identifier hs-var">l'</span></a></span></span><span> </span><span id="local-6989586621679038394"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038394"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">|</span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038396"><span class="hs-identifier hs-var">n'</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Eq a =&gt; a -&gt; a -&gt; Bool
+</span><span class="hs-operator hs-var">==</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038415"><span class="hs-identifier hs-var">n</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><span class="hs-number">1</span></span><span>        </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038411"><span class="hs-identifier hs-var">nSub1</span></a></span><span>  </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038394"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span>
+</span><span id="line-25"></span><span>              </span><span class="annot"><a href="ElectronConf.html#SubL"><span class="hs-identifier hs-type">SubL</span></a></span><span> </span><span id="local-6989586621679038393"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038393"><span class="hs-identifier hs-var">n'</span></a></span></span><span> </span><span id="local-6989586621679038392"><span class="annot"><span class="annottext">QL
+</span><a href="#local-6989586621679038392"><span class="hs-identifier hs-var">l'</span></a></span></span><span> </span><span id="local-6989586621679038391"><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038391"><span class="hs-identifier hs-var">e</span></a></span></span><span>                      </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038408"><span class="hs-identifier hs-var">a</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038410"><span class="hs-identifier hs-var">nSub2</span></a></span><span>  </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Nat
+</span><a href="#local-6989586621679038391"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span>
+</span><span id="line-26"></span><span>
+</span><span id="line-27"></span><span class="hs-comment">-- | Yields effective nuclear charge (for valence e-)</span><span>
+</span><span id="line-28"></span><span class="hs-comment">-- Atomic number - screening constant </span><span>
+</span><span id="line-29"></span><span class="annot"><a href="Slaters.html#zEff"><span class="hs-identifier hs-type">zEff</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679038538"><span class="annot"><a href="#local-6989586621679038538"><span class="hs-identifier hs-type">a</span></a></span></span><span class="hs-operator">.</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Fractional</span></span><span> </span><span class="annot"><a href="#local-6989586621679038538"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Elements.html#Element"><span class="hs-identifier hs-type">Element</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038538"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span>
+</span><span id="line-30"></span><span id="zEff"><span class="annot"><span class="annottext">zEff :: forall a. Fractional a =&gt; Element -&gt; a
+</span><a href="Slaters.html#zEff"><span class="hs-identifier hs-var hs-var">zEff</span></a></span></span><span> </span><span id="local-6989586621679038382"><span class="annot"><span class="annottext">Element
+</span><a href="#local-6989586621679038382"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679038381"><span class="annot"><span class="annottext">atm :: Int
+</span><a href="#local-6989586621679038381"><span class="hs-identifier hs-var hs-var">atm</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Element -&gt; Int
+</span><a href="Elements.html#toAtomic"><span class="hs-identifier hs-var">toAtomic</span></a></span><span> </span><span class="annot"><span class="annottext">Element
+</span><a href="#local-6989586621679038382"><span class="hs-identifier hs-var">e</span></a></span><span> </span><span>
+</span><span id="line-31"></span><span>             </span><span id="local-6989586621679038379"><span class="annot"><span class="annottext">ec :: EConf
+</span><a href="#local-6989586621679038379"><span class="hs-identifier hs-var hs-var">ec</span></a></span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; EConf
+</span><a href="ElectronConf.html#anumToEConf"><span class="hs-identifier hs-var">anumToEConf</span></a></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679038381"><span class="hs-identifier hs-var">atm</span></a></span><span> </span><span>
+</span><span id="line-32"></span><span>         </span><span class="hs-keyword">in</span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679038381"><span class="hs-identifier hs-var">atm</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; EConf -&gt; a
+</span><a href="Slaters.html#screenConst"><span class="hs-identifier hs-var">screenConst</span></a></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038379"><span class="hs-identifier hs-var">ec</span></a></span><span>
+</span><span id="line-33"></span><span>
+</span><span id="line-34"></span><span class="hs-comment">-- | Yields effective nuclear charge for an ion </span><span>
+</span><span id="line-35"></span><span class="hs-comment">-- Atomic number - ion `EConf` screening constant </span><span>
+</span><span id="line-36"></span><span class="annot"><a href="Slaters.html#zEffIon"><span class="hs-identifier hs-type">zEffIon</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679038532"><span class="annot"><a href="#local-6989586621679038532"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span id="local-6989586621679038534"><span class="annot"><a href="#local-6989586621679038534"><span class="hs-identifier hs-type">st</span></a></span></span><span class="hs-operator">.</span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Elements.html#KnownCharge"><span class="hs-identifier hs-type">KnownCharge</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679038534"><span class="hs-identifier hs-type">st</span></a></span><span class="hs-special">,</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Fractional</span></span><span> </span><span class="annot"><a href="#local-6989586621679038532"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="Elements.html#Species"><span class="hs-identifier hs-type">Species</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679038534"><span class="hs-identifier hs-type">st</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Maybe</span></span><span> </span><span class="annot"><a href="#local-6989586621679038532"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span>
+</span><span id="line-37"></span><span id="zEffIon"><span class="annot"><span class="annottext">zEffIon :: forall a (st :: Charge).
+(KnownCharge st, Fractional a) =&gt;
+Species st -&gt; Maybe a
+</span><a href="Slaters.html#zEffIon"><span class="hs-identifier hs-var hs-var">zEffIon</span></a></span></span><span> </span><span id="local-6989586621679038369"><span class="annot"><span class="annottext">Species st
+</span><a href="#local-6989586621679038369"><span class="hs-identifier hs-var">st</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="hs-keyword">case</span><span> </span><span class="annot"><span class="annottext">forall (a :: Charge). Species a -&gt; Either (Atoms, Atoms) Element
+</span><a href="Elements.html#specValue"><span class="hs-identifier hs-var">specValue</span></a></span><span> </span><span class="annot"><span class="annottext">Species st
+</span><a href="#local-6989586621679038369"><span class="hs-identifier hs-var">st</span></a></span><span> </span><span class="hs-keyword">of</span><span>
+</span><span id="line-38"></span><span>               </span><span class="annot"><span class="hs-identifier hs-type">Right</span></span><span> </span><span id="local-6989586621679038367"><span class="annot"><span class="annottext">Element
+</span><a href="#local-6989586621679038367"><span class="hs-identifier hs-var">e</span></a></span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="hs-keyword">let</span><span> </span><span id="local-6989586621679038366"><span class="annot"><span class="annottext">atm :: Int
+</span><a href="#local-6989586621679038366"><span class="hs-identifier hs-var hs-var">atm</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Element -&gt; Int
+</span><a href="Elements.html#toAtomic"><span class="hs-identifier hs-var">toAtomic</span></a></span><span> </span><span class="annot"><span class="annottext">Element
+</span><a href="#local-6989586621679038367"><span class="hs-identifier hs-var">e</span></a></span><span>
+</span><span id="line-39"></span><span>                              </span><span id="local-6989586621679038362"><span class="annot"><span class="annottext">ec :: EConf
+</span><a href="#local-6989586621679038362"><span class="hs-identifier hs-var hs-var">ec</span></a></span></span><span>  </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">Int -&gt; EConf -&gt; EConf
+</span><a href="ElectronConf.html#formIon"><span class="hs-identifier hs-var">formIon</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall (a :: Charge) (c :: Nat) n.
+(KnownNat c, c ~ NaturalCharge a, Integral n) =&gt;
+Species a -&gt; n
+</span><a href="Elements.html#specCharge"><span class="hs-identifier hs-var">specCharge</span></a></span><span> </span><span class="annot"><span class="annottext">Species st
+</span><a href="#local-6989586621679038369"><span class="hs-identifier hs-var">st</span></a></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">Int -&gt; EConf
+</span><a href="ElectronConf.html#anumToEConf"><span class="hs-identifier hs-var">anumToEConf</span></a></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679038366"><span class="hs-identifier hs-var">atm</span></a></span><span> </span><span>
+</span><span id="line-40"></span><span>                           </span><span class="hs-keyword">in</span><span> </span><span class="annot"><span class="annottext">forall a. a -&gt; Maybe a
+</span><span class="hs-identifier hs-var">Just</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">forall a b. (Integral a, Num b) =&gt; a -&gt; b
+</span><span class="hs-identifier hs-var">fromIntegral</span></span><span> </span><span class="annot"><span class="annottext">Int
+</span><a href="#local-6989586621679038366"><span class="hs-identifier hs-var">atm</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; EConf -&gt; a
+</span><a href="Slaters.html#screenConst"><span class="hs-identifier hs-var">screenConst</span></a></span><span> </span><span class="annot"><span class="annottext">EConf
+</span><a href="#local-6989586621679038362"><span class="hs-identifier hs-var">ec</span></a></span><span> </span><span>
+</span><span id="line-41"></span><span>               </span><span class="annot"><span class="hs-identifier hs-type">Left</span></span><span> </span><span class="annot"><span class="annottext">(Atoms, Atoms)
+</span><span class="hs-identifier">_</span></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><span class="annottext">forall a. Maybe a
+</span><span class="hs-identifier hs-var">Nothing</span></span><span>
+</span><span id="line-42"></span><span>
+</span><span id="line-43"></span><span class="hs-comment">-- | Conversion from max atomic radius to covalent radius </span><span>
+</span><span id="line-44"></span><span class="hs-comment">-- Approximate using regression on available elements </span><span>
+</span><span id="line-45"></span><span class="annot"><a href="Slaters.html#rCov"><span class="hs-identifier hs-type">rCov</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="hs-keyword">forall</span><span> </span><span id="local-6989586621679038515"><span class="annot"><a href="#local-6989586621679038515"><span class="hs-identifier hs-type">a</span></a></span></span><span class="hs-operator">.</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679038515"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038515"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038515"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-46"></span><span id="rCov"><span class="annot"><span class="annottext">rCov :: forall a. Floating a =&gt; a -&gt; a
+</span><a href="Slaters.html#rCov"><span class="hs-identifier hs-var hs-var">rCov</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">(*)</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">570.114890425</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-identifier hs-var">subtract</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1.23657508201</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">**</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.0774677838022</span></span><span class="hs-special">)</span><span> </span><span>
+</span><span id="line-47"></span><span>
+</span><span id="line-48"></span><span class="hs-comment">-- | Allred-Rochow Electronegativity using `zEff` and `rCov`</span><span>
+</span><span id="line-49"></span><span id="local-6989586621679038512"><span class="annot"><a href="Slaters.html#eNegAR"><span class="hs-identifier hs-type">eNegAR</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Fractional</span></span><span> </span><span class="annot"><a href="#local-6989586621679038512"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038512"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038512"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038512"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
+</span><span id="line-50"></span><span id="eNegAR"><span class="annot"><span class="annottext">eNegAR :: forall a. Fractional a =&gt; a -&gt; a -&gt; a
+</span><a href="Slaters.html#eNegAR"><span class="hs-identifier hs-var hs-var">eNegAR</span></a></span></span><span> </span><span id="local-6989586621679038332"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038332"><span class="hs-identifier hs-var">zeff</span></a></span></span><span> </span><span id="local-6989586621679038331"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038331"><span class="hs-identifier hs-var">rcov</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">3590</span></span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">*</span></span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038332"><span class="hs-identifier hs-var">zeff</span></a></span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">/</span></span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038331"><span class="hs-identifier hs-var">rcov</span></a></span><span> </span><span class="annot"><span class="annottext">forall a b. (Fractional a, Integral b) =&gt; a -&gt; b -&gt; a
+</span><span class="hs-operator hs-var">^^</span></span><span> </span><span class="annot"><span class="annottext">Integer
+</span><span class="hs-number">2</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">+</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">0.744</span></span><span>
+</span><span id="line-51"></span><span>
+</span><span id="line-52"></span><span class="hs-comment">-- | Pauling electronegativity based on regression from `eNegAR` </span><span>
+</span><span id="line-53"></span><span id="local-6989586621679038328"><span class="annot"><a href="Slaters.html#eNeg"><span class="hs-identifier hs-type">eNeg</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679038328"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038328"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038328"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038328"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
+</span><span id="line-54"></span><span id="eNeg"><span class="annot"><span class="annottext">eNeg :: forall a. Floating a =&gt; a -&gt; a -&gt; a
+</span><a href="Slaters.html#eNeg"><span class="hs-identifier hs-var hs-var">eNeg</span></a></span></span><span> </span><span id="local-6989586621679038317"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038317"><span class="hs-identifier hs-var">zeff</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">(+)</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1.26455649347</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">(*)</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1.42106566995</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a
+</span><span class="hs-identifier hs-var">log</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; a -&gt; a -&gt; a
+</span><a href="Slaters.html#eNegAR"><span class="hs-identifier hs-var">eNegAR</span></a></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038317"><span class="hs-identifier hs-var">zeff</span></a></span><span>
+</span><span id="line-55"></span><span>
+</span><span id="line-56"></span><span class="hs-comment">-- | Percent Ionic Character using Pauling's formula for electronegativity difference </span><span>
+</span><span id="line-57"></span><span id="local-6989586621679038315"><span class="annot"><a href="Slaters.html#percentIonic"><span class="hs-identifier hs-type">percentIonic</span></a></span><span> </span><span class="hs-glyph">::</span><span> </span><span class="annot"><span class="hs-identifier hs-type">Floating</span></span><span> </span><span class="annot"><a href="#local-6989586621679038315"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">=&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038315"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038315"><span class="hs-identifier hs-type">a</span></a></span><span> </span><span class="hs-glyph">-&gt;</span><span> </span><span class="annot"><a href="#local-6989586621679038315"><span class="hs-identifier hs-type">a</span></a></span></span><span> </span><span>
+</span><span id="line-58"></span><span id="percentIonic"><span class="annot"><span class="annottext">percentIonic :: forall a. Floating a =&gt; a -&gt; a -&gt; a
+</span><a href="Slaters.html#percentIonic"><span class="hs-identifier hs-var hs-var">percentIonic</span></a></span></span><span> </span><span id="local-6989586621679038298"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038298"><span class="hs-identifier hs-var">en1</span></a></span></span><span> </span><span id="local-6989586621679038297"><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038297"><span class="hs-identifier hs-var">en2</span></a></span></span><span> </span><span class="hs-glyph">=</span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">(*)</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">100</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">1</span></span><span> </span><span class="hs-glyph">-</span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Floating a =&gt; a -&gt; a
+</span><span class="hs-identifier hs-var">exp</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a. Fractional a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-operator hs-var">/</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><span class="hs-number">4</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a
+</span><span class="hs-identifier hs-var">negate</span></span><span> </span><span class="annot"><span class="annottext">forall b c a. (b -&gt; c) -&gt; (a -&gt; b) -&gt; a -&gt; c
+</span><span class="hs-operator hs-var">.</span></span><span> </span><span class="hs-special">(</span><span class="annot"><span class="annottext">forall a b. (Num a, Integral b) =&gt; a -&gt; b -&gt; a
+</span><span class="hs-operator hs-var">^</span></span><span> </span><span class="annot"><span class="annottext">Integer
+</span><span class="hs-number">2</span></span><span class="hs-special">)</span><span> </span><span class="annot"><span class="annottext">forall a b. (a -&gt; b) -&gt; a -&gt; b
+</span><span class="hs-operator hs-var">$</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038297"><span class="hs-identifier hs-var">en2</span></a></span><span> </span><span class="annot"><span class="annottext">forall a. Num a =&gt; a -&gt; a -&gt; a
+</span><span class="hs-glyph hs-var">-</span></span><span> </span><span class="annot"><span class="annottext">a
+</span><a href="#local-6989586621679038298"><span class="hs-identifier hs-var">en1</span></a></span><span> </span><span>
+</span><span id="line-59"></span></pre></body></html>

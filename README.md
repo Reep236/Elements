@@ -14,9 +14,9 @@ Type-level computation is reasonably effective up to sodium.
 
 # Slaters # 
 
-Calculation of screening constant, effective nuclear charge, covalent radius (from atomic radius), and electronegativity using Slater's rules. Independent of `Elements`
+Calculation of screening constant, effective nuclear charge, covalent radius (from atomic radius), and electronegativity using Slater's rules. 
 
-Has two child modules which apply Elements to type- and value- level 
+Has two child modules which apply Elements on the type- and value- level 
 
 ## Slaters.Safe ## 
 
