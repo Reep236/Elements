@@ -295,7 +295,7 @@ formalCharge = \case
     Terminating _ fc _ n -> fc * Pos n
     Central _ c _ bs     -> foldr ((+) . formalCharge) c bs
      
--- | Reifies a binary compound as `Ionic` if it has at least 50 ` percentIonic' ` character, otherwise `Covalent2`  
+-- | Reifies a binary compound as `Ionic` if it has at least 50 'percentIonic'' character, otherwise `Covalent2`  
 mkMaybeIonic :: 
     forall e1 e1Ct e2 e2Ct c1 c2. 
         ( KnownElem e1, KnownElem e2
