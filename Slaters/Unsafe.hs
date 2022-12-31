@@ -1,5 +1,9 @@
 {-# LANGUAGE LambdaCase #-}
 
+{-|
+Module: Slaters.Unsafe 
+Description: Value-level interface for Slaters-derived quantities 
+-}
 module Slaters.Unsafe where 
 
 import Elements 

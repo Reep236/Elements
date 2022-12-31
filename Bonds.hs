@@ -1,6 +1,11 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 
+{-|
+Module: Bonds 
+Description: Covalent bonds and bond energies, entirely value-level 
+-}
+
 module Bonds where 
 
 import Elements

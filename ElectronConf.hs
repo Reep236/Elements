@@ -7,6 +7,11 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE LambdaCase #-}
 
+{-|
+Module: ElectronConf
+Description: Quantum numbers and electron configuration
+-}
+
 module ElectronConf 
     ( QL (..)
     , KnownQL
@@ -50,7 +55,9 @@ data QL = SL | PL | DL | FL deriving (Eq, Ord, Enum)
 -- | Internal, singleton `QL` for reflection
 newtype QlSing (a :: QL) = QlSing QL 
 
+-- | Type class representing a reifiable azimuthal quantum number 
 class KnownQL (a :: QL) where 
+    -- | Internal, yields singleton QL 
     qlSing :: QlSing a  
 
 instance KnownQL SL where 
@@ -148,6 +155,8 @@ instance Show EConf where
 
 -- | Type level conversion of an atomic number to electron configuration 
 -- Far too slow for elements past Sodium 
+
+{-# WARNING ANumToEConf "Greatly lengthens type-checking, avoid if possible " #-}
 type family ANumToEConf (n :: Nat) :: EConf  where 
     ANumToEConf 0 = TypeError (Text "No Atomic # 0")
     ANumToEConf 1 = SubL 1 SL 1 :<-: Nucleus 
@@ -198,6 +207,8 @@ type family ANum2PQN (z :: Nat) :: Nat where
 -- @ case ANumToEConf z of 
 --      sl :<-: ec -> sl @ 
 -- Without extra expense 
+
+{-# WARNING ANumLastSL "Greatly lengthens type-checking, avoid if possible" #-}
 type family ANumLastSL (z :: Nat) (ec :: Sublevel) :: Sublevel where 
     ANumLastSL 0 st = st
     ANumLastSL z (SubL n SL e) = 

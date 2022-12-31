@@ -6,6 +6,11 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE LambdaCase #-}
 
+{-|
+Module: Example 
+Description: Example results and demonstration
+-}
+
 module Example where 
 
 import Elements
@@ -42,7 +47,7 @@ readBond = \case
 bondEnergy' :: Floating a => Bond -> (Bond, a)
 bondEnergy' b = (b, bondEnergy b)
 
--- | Display calculated `bondEnergies`, combustion for acetylene  
+-- | Display calculated `bondEnergy`/ies, combustion for acetylene  
 main :: IO()
 main = do
     print . bondEnergy' $ Bond 1 C C  

@@ -4,12 +4,13 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeFamilies #-}
 
-{-| 
-There is little benefit to a type-level interface given all elements through Oganesson are considered `Valid`. Subject to removal unless further functionality neccessitates a type-level interface. All functions are extremely slow past Sodium, since they calculate the full electron configuration
+{-|
+Module: Slaters.Safe
+Description: Type-level interface for Slaters-derived values 
 -}
 
 module Slaters.Safe 
-    {-# WARNING "There is little benefit to a type-level interface given all elements through Oganesson are considered `Valid`. Subject to removal unless further functionality neccessitates a type-level interface. All functions are extremely slow past Sodium, since they calculate the full electron configuration" #-} where 
+    {-# WARNING "There is little benefit to a type-level interface given all elements through Oganesson are considered 'Valid.' Subject to removal unless further functionality neccessitates a type-level interface. All functions are extremely slow past Sodium, since they calculate the full electron configuration" #-} where 
 
 import Elements 
 import ElectronConf 

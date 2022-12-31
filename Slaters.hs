@@ -1,3 +1,7 @@
+{-|
+Module: Slaters
+Description: Functions based on Slater's Rules
+-}
 module Slaters where 
 
 import Elements

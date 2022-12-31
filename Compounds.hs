@@ -5,6 +5,14 @@
 {-# LANGUAGE NoStarIsType #-}
 {-# LANGUAGE LambdaCase #-}
 
+{-|
+Module: Compounds
+Description: Ionic, binary covalent, and molecular compounds 
+
+Currently, molecule constructors are exposed and users are trusted to reify a Lewis-like structure using `molecValI`. 
+Ideally, these are solved automatically with minimal user-specification to minimize formal charge, and all `Molecule`s are guaranteed @Valid@ 
+-}
+
 module Compounds 
     ( Ionic (..) 
     , Covalent2 
@@ -92,15 +100,17 @@ mkPolarCov2 ::
     => Covalent2 e1Ct e2Ct 
 mkPolarCov2 = UnsafeMkCov2 (elemValI @e1) (elemValI @e2)
 
--- | Tree-like Molecule, composed of central and terminating elements  
+-- | Tree-like Molecule, composed of central and terminating elements.  
 -- Position, Bonds to parent, Formal `Charge`, `Element`, Children|Count
+-- Currently requires a Lewis-like structure for reification 
 data Molecule = Central Nat Charge Element [Molecule] | Terminating Nat Charge Element Nat deriving Eq
 
 -- | Equivalent of `Atoms` for `Molecule` 
 data Molecules = Molecules Molecule Int deriving Eq
 
 -- | Useful for functions on newtype-wrapped `Molecule`s satisfying special constraints 
-class Molecular a where 
+class Molecular a where
+    -- | Yields `Molecule` given a wrapped `Molecular` compound
     asMolecule :: a -> Molecule
 
 instance Show Molecule where 
@@ -285,7 +295,7 @@ formalCharge = \case
     Terminating _ fc _ n -> fc * Pos n
     Central _ c _ bs     -> foldr ((+) . formalCharge) c bs
      
--- | Reifies a binary compound as `Ionic` if it has at least 50 `percentIonic'` character, otherwise `Covalent2`  
+-- | Reifies a binary compound as `Ionic` if it has at least 50 ` percentIonic' ` character, otherwise `Covalent2`  
 mkMaybeIonic :: 
     forall e1 e1Ct e2 e2Ct c1 c2. 
         ( KnownElem e1, KnownElem e2

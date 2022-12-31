@@ -5,9 +5,13 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 
+{-|
+Module: Reactions 
+Description: Molecular (for the time) reactions and rough thermochemistry
+-}
+
 module Reactions
     ( Hydrocarbon
-    , Molecular
     , MolReaction (..)
     , asMolecule
     , ValidHydrocarbon 

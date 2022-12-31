@@ -13,10 +13,15 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeFamilyDependencies #-}
 
+{-|
+Module: Elements 
+Description: Basic type- and value- level Elements and Ions 
+-}
+
 module Elements 
     ( Element (..)
-    , KnownElem (..)
-    , KnownCharge (..)
+    , KnownElem 
+    , KnownCharge 
     , ValenceE (..)
     , valenceE
     , elemVal
@@ -72,7 +77,9 @@ data Element
 -- | Internal `Element` singleton for reflection
 newtype SElem (a :: Element) = SElem Element
 
+-- | Type class representing a reifiable `Element`
 class KnownElem (a :: Element) where 
+    -- | Internal, yields `Element` singleton 
     elemSing :: SElem a
 
 -- | Reify `Element` with `Proxy`
@@ -294,7 +301,7 @@ mkIonRep = UnsafeMkSpecies $ elemValI @a
 
 -- | Reify a binary polyatomic ion
 -- For example, Nitrate: 
--- 
+--
 -- > mkIonPoly @N @1 @O @3 @(Neg 1)
 mkIonPoly :: forall e1 ct1 e2 ct2 charge. 
     ( KnownElem e1, KnownNat ct1  
