@@ -37,7 +37,8 @@ module ElectronConf
     , getMS
     , getML
     , getL 
-    , foldrEC 
+    , foldrEC
+    , lengthEC
     , slValI 
     )
 
@@ -138,11 +139,16 @@ getMS = \case
             DL -> toEnum . fromIntegral $ (e - 1) `div` 5 
             FL -> toEnum . fromIntegral $ (e - 1) `div` 7
 
--- | foldr definition as EConf cannot have a Foldable instance 
+-- | foldr definition as EConf cannot have a `Foldable` instance 
 foldrEC :: (Sublevel -> b -> b) -> b -> EConf -> b 
 foldrEC f init = \case 
     ec :<-: ecs -> foldrEC f (f ec init) ecs 
-    Nucleus -> init 
+    Nucleus -> init
+
+lengthEC :: EConf -> Int 
+lengthEC = \case 
+    Nucleus   -> 0 
+    _ :<-: ec -> 1 + lengthEC ec 
 
 instance Show Sublevel where 
     show (SubL a b c) = show a ++ show b ++ show c

@@ -11,7 +11,7 @@ Module: Example
 Description: Example results and demonstration
 -}
 
-module Example where 
+module Main where 
 
 import Elements
 import ElectronConf
@@ -24,6 +24,7 @@ import GHC.TypeLits
 import Data.Proxy
 import Data.Type.Bool 
 import Data.Type.Equality
+import Orbitals (atomicRadius)
 
 
 -- | Read `Bond`s from some list, useful for comparison ith some existing data 
@@ -50,10 +51,4 @@ bondEnergy' b = (b, bondEnergy b)
 -- | Display calculated `bondEnergy`/ies, combustion for acetylene  
 main :: IO()
 main = do
-    print . bondEnergy' $ Bond 1 C C  
-    print . bondEnergy' $ Bond 2 C C  
-    print . bondEnergy' $ Bond 3 C C  
-    print . bondEnergy' $ Bond 1 C H 
-    print . bondEnergy' $ Bond 2 C O
-    print . bondEnergy' $ Bond 1 O H 
-    print . deltaHBondEnergy . combustHydrocarbon $ mkHydrocarbon @2 @2 
+    mapM_ (\e -> print (e, atomicRadius e)) [H .. Og]

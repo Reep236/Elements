@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-|
 Module: Slaters
 Description: Functions based on Slater's Rules
@@ -9,7 +10,7 @@ import ElectronConf
 import GHC.TypeLits
 
 -- | Yields screening constant based on a value-level Electron Configuration using Slater's Rules 
-screenConst :: forall a. Fractional a => EConf -> a 
+screenConst :: Fractional a => EConf -> a 
 screenConst ec = 
     case peakN ec of 
       Left Nucleus -> 0 
@@ -19,7 +20,7 @@ screenConst ec =
       Right (SubL n DL e) -> foldrEC (evalEff (n, DL) (0.35, 1, 1   , 1)) 0 ec
       Right (SubL n FL e) -> foldrEC (evalEff (n, FL) (0.35, 1, 1   , 1)) 0 ec
     where 
-        evalEff :: (Natural, QL) -> (a, a, a, a) -> Sublevel -> a -> a 
+        evalEff :: Fractional a => (Natural, QL) -> (a, a, a, a) -> Sublevel -> a -> a 
         evalEff (n, l) (sameSL, lowerL, nSub1, nSub2) ec a 
           = case ec of
               SubL n' l' e | n' == n && l' == l -> a + sameSL * fromIntegral (e - 1) 
@@ -30,14 +31,14 @@ screenConst ec =
 
 -- | Yields effective nuclear charge (for valence e-)
 -- Atomic number - screening constant 
-zEff :: forall a. Fractional a => Element -> a 
+zEff :: Fractional a => Element -> a 
 zEff e = let atm = toAtomic e 
              ec  = anumToEConf atm 
          in fromIntegral atm - screenConst ec
 
 -- | Yields effective nuclear charge for an ion 
 -- Atomic number - ion `EConf` screening constant 
-zEffIon :: forall a st. (KnownCharge st, Fractional a) => Species st -> Maybe a 
+zEffIon :: (KnownCharge st, Fractional a) => Species st -> Maybe a 
 zEffIon st = case specValue st of
                Right e -> let atm = toAtomic e
                               ec  = formIon (specCharge st) . anumToEConf $ atm 
@@ -46,7 +47,7 @@ zEffIon st = case specValue st of
 
 -- | Conversion from max atomic radius to covalent radius 
 -- Approximate using regression on available elements 
-rCov :: forall a. Floating a => a -> a
+rCov :: Floating a => a -> a
 rCov = (*) 570.114890425 . subtract 1.23657508201 . (** 0.0774677838022) 
 
 -- | Allred-Rochow Electronegativity using `zEff` and `rCov`
