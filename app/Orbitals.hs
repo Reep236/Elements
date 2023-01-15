@@ -65,19 +65,19 @@ nA  = 6.02214e23
 
 theta :: Fractional a => QL -> a
 theta = \case 
-    SL -> 0.5 -- (In paper) cos 60 
+    SL -> 0.5  -- (In paper) cos 60 
     PL -> 0.75 -- (In paper) (cos 60 + cos 0) / 2
-    DL -> (1 + 1/2 + 0 - realToFrac (sqrt 3) / 2)/4 -- (Unofficial) (cos 0 + cos 60 + 2*cos 90 + cos 150) / 5
-    FL -> (realToFrac (sqrt 2) + 2 + realToFrac (sqrt 3))/6 -- (Unofficial) (2*cos 90 + 2*cos 0 + 2*cos 30) / 6 
+    DL -> 2/5 
+    FL -> 2/3  
 
-thetas :: Fractional a => EConf -> V.Vector (Nat, Nat, a)
-thetas (SubL 1 SL n :<-: Nucleus) = V.singleton (1, n, 1)
-thetas (SubL 3 SL n :<-: rem)     = V.cons (3, n, 1/3) $ thetas rem
+thetas :: Fractional a => EConf -> V.Vector ((Nat, Nat), a)
+thetas (SubL 1 SL n :<-: Nucleus) = V.singleton ((1, n), 1)
+thetas (SubL 3 SL n :<-: rem)     = V.cons ((3, n), 2/3) $ thetas rem
 thetas rem = flip V.unfoldr rem $ \case 
-                SubL pqn l e :<-: ec -> Just ((pqn, e, theta l), ec)
+                SubL pqn l e :<-: ec -> Just (((pqn, e), theta l), ec)
                 Nucleus              -> Nothing 
 
-thetasE :: Fractional a => Element -> V.Vector (Nat, Nat, a)
+thetasE :: Fractional a => Element -> V.Vector ((Nat, Nat), a)
 thetasE = thetas . anumToEConf . toAtomic
 
 t1Z  :: (Integral i, Fractional a) => i -> a -> a 
@@ -92,14 +92,14 @@ t2  n rx = (fromIntegral n ^^ 2) / (rx ^^ 3)
 t2' :: Fractional a => Nat -> a -> a 
 t2' n rx = negate (3 * fromIntegral n ^^ 2) / (rx ^^ 4)
 
-repTerm  :: Fractional a => a -> (Nat, Nat, a) -> a -> a 
-repTerm  rx (_, e, t) ry = fromIntegral e / ((rx + t*ry)^^2)
+repTerm  :: Fractional a => a -> ((Nat, Nat), a) -> a -> a 
+repTerm  rx ((_, e), t) ry = fromIntegral e / ((rx + t*ry)^^2)
 
-repTerm' :: Fractional a => a -> (Nat, Nat, a) -> a -> a 
-repTerm' rx (_, e, t) ry = (*) (negate 2) $ fromIntegral e / ((rx + t*ry)^^3)
+repTerm' :: Fractional a => a -> ((Nat, Nat), a) -> a -> a 
+repTerm' rx ((_, e), t) ry = (*) (negate 2) $ fromIntegral e / ((rx + t*ry)^^3)
 
-rptDry   :: Fractional a => a -> (Nat, Nat, a) -> a -> a 
-rptDry   rx (_, e, t) ry = (*) (negate 2) . (*) t $ fromIntegral e / ((rx + t*ry)^^3)
+rptDry   :: Fractional a => a -> ((Nat, Nat), a) -> a -> a 
+rptDry   rx ((_, e), t) ry = (*) (negate 2) . (*) t $ fromIntegral e / ((rx + t*ry)^^3)
 
 rOrbSingExprZEC :: (Integral i, Fractional a) => i -> EConf -> Int -> V.Vector a -> a
 rOrbSingExprZEC z ec n rs = 
@@ -108,26 +108,34 @@ rOrbSingExprZEC z ec n rs =
         (rx, ls) = (V.head rls, V.tail rls)
         rem = ps V.++ ls 
         (pts, tlts) = V.splitAt n ts 
-        ((pqn, nx1, tx), lts) = (V.head tlts, V.tail tlts) 
-        tem = pts V.++ lts 
+        (((pqn, nx1), tx), lts) = (V.head tlts, V.tail tlts) 
+        (SubL _ l _ :<-: _) = ec
+        tem
+          | pqn < 4   = pts V.++ V.map (tx <$) lts 
+          | l == PL   = V.map (0.475 <$) (pts V.++ lts)
+          | otherwise = pts V.++ V.map (0.75 <$) lts 
      in negate (t1Z z rx) 
         + t2 pqn rx 
-        + repTerm rx (pqn, nx1 - 1, tx) rx 
+        + repTerm rx ((pqn, nx1 - 1), tx) rx 
         + (sum . V.map (uncurry . flip $ repTerm rx) $ V.zip rem tem)
 
 rOrbSingExprZEC' :: (Fractional a, Integral i) => i -> EConf -> Int -> Int -> V.Vector a -> a 
 rOrbSingExprZEC' z ec n dn rs
   | n == dn =  
-    let ts = thetas ec 
+    let ts = thetas ec
         (ps, rls) = V.splitAt n rs 
         (rx, ls) = (V.head rls, V.tail rls)
         rem = ps V.++ ls 
-        (pts, tlts) = V.splitAt n ts 
-        ((pqn, nx1, tx), lts) = (V.head tlts, V.tail tlts) 
-        tem = pts V.++ lts 
+        (pts, tls) = V.splitAt n ts 
+        (((pqn, nx1), tx), lts) = (V.head tls, V.tail tls) 
+        (SubL _ l _ :<-: _) = ec
+        tem
+          | pqn < 4   = pts V.++ V.map (tx <$) lts 
+          | l == PL   = V.map (0.475 <$) (pts V.++ lts)
+          | otherwise = pts V.++ V.map (0.75 <$) lts 
      in negate (t1Z' z rx) 
         + t2' pqn rx 
-        + repTerm' rx (pqn, nx1 - 1, tx) rx 
+        + repTerm' rx ((pqn, nx1 - 1), tx) rx 
         + (sum . V.map (uncurry . flip $ repTerm' rx) $ V.zip rem tem)
   | otherwise = rptDry (rs V.! n) (ts V.! dn) (rs V.! dn)
         
@@ -312,7 +320,7 @@ constantSkeleton :: Floating a => a
 constantSkeleton = glamb*(pi*rho*(ke^^7)*(al^^6)*(c^^2)*oe)/(3*(lambl^^2))
 
 iEnergyAmp :: Floating a => a -> a -> a -- J
-iEnergyAmp r0 delta = constantSkeleton*(-2*delta)/(a0*r0)
+iEnergyAmp r0 delta = constantSkeleton*(2*delta)/(a0*r0)
 
 iEnergyZEC :: forall a i. (Floating a, Integral i) => i -> EConf -> a 
 iEnergyZEC z = \case 

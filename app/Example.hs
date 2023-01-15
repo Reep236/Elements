@@ -51,4 +51,4 @@ bondEnergy' b = (b, bondEnergy b)
 -- | Display calculated `bondEnergy`/ies, combustion for acetylene  
 main :: IO()
 main = do
-    mapM_ (\e -> print (e, atomicRadius e)) [H .. Og]
+    sequence_ [putStrLn $ show (toAtomic e) ++ ',' : show (atomicRadius e) | e <- [H .. Po], e /= Kr && e /= Xe] 
