@@ -1,7 +1,0 @@
-ignore-project: False
-documentation: True
-
-package *
-  documentation: True
---  haddock-hyperlink-source: True 
-

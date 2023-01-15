@@ -1,0 +1,7 @@
+#!/bin/bash 
+
+rm -rf ./docs/*
+mkdir ./tmp
+cabal haddock --haddock-hyperlink-source --builddir tmp 
+mv ./tmp/build/x86_64-linux/ghc-*/elements-*/doc/html/elements/* ./docs
+rm -rf ./tmp 

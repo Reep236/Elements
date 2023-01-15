@@ -15,7 +15,7 @@
 {-# LANGUAGE TypeFamilyDependencies #-}
 
 {-|
-Module: Elements 
+Module: Elements
 Description: Basic type- and value- level Elements and Ions 
 -}
 

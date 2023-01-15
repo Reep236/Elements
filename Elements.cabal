@@ -1,5 +1,5 @@
 cabal-version:      2.4
-name:               Elements
+name:               elements
 version:            0.1.0.0
 synopsis:           Chemistry DSL In Haskell 
 
@@ -22,15 +22,8 @@ extra-source-files:
     README.md
 
 library
-    exposed-modules:    Elements
-                      , ElectronConf 
-                      , Slaters 
-                      , Slaters.Safe 
-                      , Slaters.Unsafe 
-                      , Compounds
-                      , Bonds
-                      , Reactions 
-                      , Orbitals 
+    exposed-modules: 
+        ElectronConf, Slaters, Slaters.Safe, Slaters.Unsafe, Compounds, Bonds, Reactions, Orbitals, Elements 
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -47,10 +40,21 @@ library
 executable Example
     main-is:          Example.hs    
 
+    other-modules: 
+          ElectronConf
+        , Slaters
+        , Slaters.Safe
+        , Slaters.Unsafe
+        , Compounds 
+        , Bonds 
+        , Reactions
+        , Orbitals 
+        , Elements 
+
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:    base ^>=4.16.3.0
-                    , Elements
+                    , elements
                     , vector
 
     -- Directories containing source files.
