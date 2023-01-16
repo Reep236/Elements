@@ -24,7 +24,7 @@ import GHC.TypeLits
 import Data.Proxy
 import Data.Type.Bool 
 import Data.Type.Equality
-import Orbitals (atomicRadius)
+import Orbitals 
 
 
 -- | Read `Bond`s from some list, useful for comparison ith some existing data 
@@ -51,4 +51,4 @@ bondEnergy' b = (b, bondEnergy b)
 -- | Display calculated `bondEnergy`/ies, combustion for acetylene  
 main :: IO()
 main = do
-    sequence_ [putStrLn $ show (toAtomic e) ++ ',' : show (atomicRadius e) | e <- [H .. Po], e /= Kr && e /= Xe] 
+    mapM_ (\e -> putStrLn $ show (toAtomic e) ++ ',' : show (eAff e)) $ [H .. Ca]

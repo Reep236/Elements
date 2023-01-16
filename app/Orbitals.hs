@@ -17,6 +17,7 @@ module Orbitals
     , atomicRadius
     , atomicRadiusIon
     , iEnergy
+    , iEnergyIon
     , ampFacE
     ) where 
 
@@ -260,15 +261,13 @@ orbitalRadiiBohr :: Element -> [Fixed E8]
 orbitalRadiiBohr e = let z = toAtomic e in orbitalRadiiZECBohr z (anumToEConf z)
 
 -- | Yields obirtal radii (s1 - highest `Sublevel`) for any ion 
-orbitalRadiiIon :: forall st. KnownCharge st => Species st -> [Fixed E8]
+orbitalRadiiIon :: forall st. KnownCharge st => Species st Element -> [Fixed E8]
 orbitalRadiiIon = map (* a0pm) . orbitalRadiiIonBohr
 
-orbitalRadiiIonBohr :: forall st. KnownCharge st => Species st -> [Fixed E8]
+orbitalRadiiIonBohr :: forall st. KnownCharge st => Species st Element -> [Fixed E8]
 orbitalRadiiIonBohr ion = 
-    let (z, ec) = case specValue ion of 
-                        Right e -> ( toAtomic e
-                                   , formIon (charge $ chargeValI @st) $ anumToEConf (toAtomic e)) 
-                        Left  _ -> error "Polyatomic ion has no orbital radii" 
+    let (z, ec) = ( toAtomic $ specValue ion
+                  , formIon (specCharge ion) $ anumToEConf z) 
      in orbitalRadiiZECBohr z ec
 
 atomicRadiusZECBohr :: forall a i. (Fractional a, Integral i) => i -> EConf -> a 
@@ -286,13 +285,13 @@ atomicRadiusBohr :: Fractional a => Element -> a
 atomicRadiusBohr = realToFrac . maximum . orbitalRadiiBohr
 
 -- | `atomicRadius` for ions
-atomicRadiusIon :: forall st a. (KnownCharge st, Fractional a) => Species st -> a 
+atomicRadiusIon :: forall st a. (KnownCharge st, Fractional a) => Species st Element -> a 
 atomicRadiusIon = (*) a0pm . atomicRadiusIonBohr
 
-atomicRadiusIonBohr :: forall st a. (KnownCharge st, Fractional a) => Species st -> a 
+atomicRadiusIonBohr :: forall st a. (KnownCharge st, Fractional a) => Species st Element -> a 
 atomicRadiusIonBohr = realToFrac . maximum . orbitalRadiiIonBohr
 
-amplitudeFactorRX :: forall a. Fractional a => a -> Sublevel -> a 
+amplitudeFactorRX :: forall a. (Fractional a) => a -> Sublevel -> a 
 amplitudeFactorRX rx = \case 
     SubL 1 SL _     -> 1 
     SubL _ SL _     -> 1 + (1/rx)
@@ -300,18 +299,17 @@ amplitudeFactorRX rx = \case
         | e < 4     -> 0.5*(1   + (1/rx))
         | otherwise -> 0.5*(0.5 + (1/rx))
     SubL _ DL e 
-        | e < 6     -> 0.25*(1  + (1/rx))
-        | otherwise -> 0.25*(0.25 + (1/rx))
+        | e < 6     -> (3*rx + 2)/9
+        | otherwise -> 1.15 - 5/(9*rx)
     SubL _ FL e
-        | e < 8     -> 0.125*(1 + (1/rx))
-        | otherwise -> 0.125*(0.125 + (1/rx))
+        | e < 8     -> (2^^(-5) + (1/rx))*(2^^(-3) + 1/14)
+        | otherwise -> 1.15 - 5/(9*rx)
 
-amplitudeFactorZEC :: forall a i. (Fractional a, Integral i) => i -> EConf -> a 
-amplitudeFactorZEC z = \case 
-    ec@(sl :<-: _) -> amplitudeFactorRX (realToFrac . last $ orbitalRadiiZECBohr z ec) sl
+amplitudeFactorRXIon :: forall a. Fractional a => Int -> a -> Sublevel -> a
+amplitudeFactorRXIon charge rx = (+) (fromIntegral charge) . amplitudeFactorRX rx 
 
 -- | Amplitude factor for a given `Element` (dimensionless)
-ampFacE :: forall a. Fractional a => Element -> a 
+ampFacE :: forall a. (Fractional a) => Element -> a 
 ampFacE e = let z = toAtomic e 
              in case anumToEConf z of 
                   sl :<-: ec -> amplitudeFactorRX (realToFrac . last $ orbitalRadiiBohr e) sl 
@@ -319,8 +317,11 @@ ampFacE e = let z = toAtomic e
 constantSkeleton :: Floating a => a
 constantSkeleton = glamb*(pi*rho*(ke^^7)*(al^^6)*(c^^2)*oe)/(3*(lambl^^2))
 
+transverseE :: Floating a => a -> a -> a -> a 
+transverseE delta r0 r1 = 2*constantSkeleton*(delta/r1 - delta/r0)
+
 iEnergyAmp :: Floating a => a -> a -> a -- J
-iEnergyAmp r0 delta = constantSkeleton*(2*delta)/(a0*r0)
+iEnergyAmp r0 delta = -2*constantSkeleton*(-delta/(r0*a0))
 
 iEnergyZEC :: forall a i. (Floating a, Integral i) => i -> EConf -> a 
 iEnergyZEC z = \case 
@@ -329,4 +330,20 @@ iEnergyZEC z = \case
 
 -- | First ionization energy for a given `Element` (kJ/mol)
 iEnergy :: Floating a => Element -> a 
-iEnergy e = let z = toAtomic e in (/ 1000) . (*) nA $ iEnergyZEC z (anumToEConf z)
+iEnergy e = let r0 = realToFrac . last $ orbitalRadiiBohr e
+                (sl :<-: _) = anumToEConf $ toAtomic e
+             in (/ 1000) . (*) nA $ iEnergyAmp r0 (amplitudeFactorRX r0 sl)
+
+-- | First ionization energy for a given Ion (kJ/mol)
+iEnergyIon :: (KnownCharge st, Floating a) => Species st Element -> a 
+iEnergyIon e = let z  = toAtomic $ specValue e
+                   r0 = realToFrac . last $ orbitalRadiiIonBohr e
+                   (sl :<-: _) = formIon (specCharge e) $ anumToEConf z
+                in (/ 1000) . (*) nA $ iEnergyAmp r0 (amplitudeFactorRXIon (specCharge e) r0 sl)
+
+-- | Electron Affinity for a given `Element` !!! Doesn't work
+-- eAff :: Floating a => Element -> a
+-- eAff e = let z = toAtomic e 
+--              ec@(sl :<-: _) = formIon (-1) $ anumToEConf z 
+--              r0 = realToFrac . last $ orbitalRadiiZECBohr z ec 
+--          in (/ 1000) . (*) nA $ iEnergyAmp r0 (amplitudeFactorRXIon (-1) r0 sl)

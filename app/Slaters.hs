@@ -38,12 +38,10 @@ zEff e = let atm = toAtomic e
 
 -- | Yields effective nuclear charge for an ion 
 -- Atomic number - ion `EConf` screening constant 
-zEffIon :: (KnownCharge st, Fractional a) => Species st -> Maybe a 
-zEffIon st = case specValue st of
-               Right e -> let atm = toAtomic e
-                              ec  = formIon (specCharge st) . anumToEConf $ atm 
-                           in Just $ fromIntegral atm - screenConst ec 
-               Left _ -> Nothing
+zEffIon :: (KnownCharge st, Fractional a) => Species st Element -> a
+zEffIon st = let atm = toAtomic (specValue st)
+                 ec  = formIon (specCharge st) . anumToEConf $ atm 
+              in fromIntegral atm - screenConst ec 
 
 -- | Conversion from max atomic radius to covalent radius 
 -- Approximate using regression on available elements 

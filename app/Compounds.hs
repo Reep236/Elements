@@ -52,8 +52,8 @@ type family ValidIonic_ (e1Ct :: Nat) (e2Ct :: Nat) (bcs :: (Nat, Nat)) :: Const
 
 -- | Constraint representing a valid formula unit of two representative `Element`s in their common ions
 type ValidIonic (e1 :: Element) (e1Ct :: Nat) (e2 :: Element) (e2Ct :: Nat) (c1 :: Nat) (c2 :: Nat) = 
-    ( Species (Pos c1) ~ IonRep e1 
-    , Species (Neg c2) ~ IonRep e2 
+    ( Species (Pos c1) Element ~ IonRep e1 
+    , Species (Neg c2) Element ~ IonRep e2 
     , KnownNat e1Ct 
     , KnownNat e2Ct
     , KnownNat c1 
@@ -63,31 +63,28 @@ type ValidIonic (e1 :: Element) (e1Ct :: Nat) (e2 :: Element) (e2Ct :: Nat) (c1 
     )
 
 -- | Basic Ionic compound made up of two `Species` and associated counts 
-data Ionic (e1Ct :: Nat) (e2Ct :: Nat) =
+data Ionic (e1Ct :: Nat) (e2Ct :: Nat) t1 t2 =
     forall a b. 
     ( KnownNat a, KnownNat b
     , '(e1Ct, e2Ct) ~ BinCoeffs a b)
-    => Ionic (Species (Pos a)) (Species (Neg b)) 
+    => Ionic (Species (Pos a) t1) (Species (Neg b) t2) 
 
 -- | Converts `Natural` charges (first `Pos`, second `Neg`) to coefficients in a formula unit 
 type family BinCoeffs (s1Charge :: Nat) (s2Charge :: Nat) :: (Nat, Nat) where 
     BinCoeffs x x = '(1, 1) 
     BinCoeffs x y = '(y, x)
 
-instance Eq (Ionic a b) where 
+instance Eq t => Eq (Ionic a b t t) where 
     (==) (Ionic a b) (Ionic c d) = (specValue a == specValue c) && (specValue b == specValue d)
 
-instance (KnownNat e1Ct, KnownNat e2Ct) => Show (Ionic e1Ct e2Ct) where 
+instance (KnownNat e1Ct, KnownNat e2Ct, Show t1, Show t2) => Show (Ionic e1Ct e2Ct t1 t2) where 
     show (Ionic a b) =
-        let as = case specValue a of
-                  Right a       -> show a 
-                  Left (a, b) -> "(" ++ show a ++ show b ++ ")" 
-            bs = case specValue b of
-                  Right a       -> show a 
-                  Left  (a, b) -> "(" ++ show a ++ show b ++ ")" 
-            an = natVal $ Proxy @e1Ct 
+        let an = natVal $ Proxy @e1Ct 
             bn = natVal $ Proxy @e2Ct 
-        in as ++ (if an == 1 then "" else show an) ++ bs ++ (if bn == 1 then "" else show bn)
+        in show (specValue a) 
+        ++ (if an == 1 then "" else show an) 
+        ++ show (specValue b) 
+        ++ (if bn == 1 then "" else show bn)
 
 -- | Shortcut to a generic binary covalent compound 
 -- Incompatible with `Molecule` as of now due to struggle forming a Lewis Structure
@@ -309,7 +306,7 @@ mkMaybeIonic ::
         ( KnownElem e1, KnownElem e2
         , ValidPolar2 e1 e1Ct e2 e2Ct Neutral
         , ValidIonic  e1 e1Ct e2 e2Ct c1 c2)
-        => Either (Covalent2 e1Ct e2Ct) (Ionic e1Ct e2Ct)
+        => Either (Covalent2 e1Ct e2Ct) (Ionic e1Ct e2Ct Element Element)
 mkMaybeIonic = let e1 = elemValI @e1 
                    e2 = elemValI @e2 
                in  if percentIonic' e1 e2 < 50 

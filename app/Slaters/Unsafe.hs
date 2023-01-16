@@ -31,12 +31,10 @@ orbitalExp e = (zEff e)/(effPQN . getN . anumToSublevel . toAtomic $ e)
 
 -- | `orbitalExp` using a given `Species` with associated `zEffIon` 
 -- `Maybe` accounts for the potential of an invalid anion (`Left` `Nucleus`)
-orbitalExpIon :: (Fractional a, KnownCharge st) => Species st -> Maybe a 
-orbitalExpIon s = case specValue s of 
-                    Right e  -> case formIonSL (specCharge s) . anumToSublevel . toAtomic $ e of 
-                                  Right sl -> (/ (effPQN . getN $ sl)) <$> zEffIon s  
-                                  Left  _  -> Nothing 
-                    Left  _  -> Nothing  
+orbitalExpIon :: (Fractional a, KnownCharge st) => Species st Element -> Maybe a
+orbitalExpIon s = case formIonSL (specCharge s) . anumToSublevel . toAtomic $ specValue s of 
+                    Right sl -> Just $ zEffIon s / (effPQN . getN $ sl)
+                    Left  _  -> Nothing 
 
 -- | Returns max/absolute atomic radius in picometers 
 -- (53 pm / a0) * (n / `orbitalExp`)
@@ -48,15 +46,13 @@ rCov' :: Floating a => Element -> a
 rCov' = rCov . rMax
 
 -- | `rMax` using a given `Species` with associated `orbitalExpIon` 
-rMaxIon :: (Fractional a, KnownCharge st) => Species st -> Maybe a  
-rMaxIon s = case specValue s of 
-              Right e -> case formIonSL (specCharge s) . anumToSublevel . toAtomic $ e of 
-                           Right sl -> (* 53) . (/) (fromIntegral . getN $ sl) <$> orbitalExpIon s 
-                           Left  _  -> Nothing 
-              Left  _ -> Nothing  
+rMaxIon :: (Fractional a, KnownCharge st) => Species st Element -> Maybe a  
+rMaxIon s = case formIonSL (specCharge s) . anumToSublevel . toAtomic $ specValue s of 
+              Right sl -> (* 53) . (/) (fromIntegral . getN $ sl) <$> orbitalExpIon s 
+              Left  _  -> Nothing  
 
 -- | `rCov` using a given `Species` with associated `rMaxIon`
-rCovIon :: (Floating a, KnownCharge st) => Species st -> Maybe a 
+rCovIon :: (Floating a, KnownCharge st) => Species st Element -> Maybe a 
 rCovIon = fmap rCov . rMaxIon
 
 -- | `eNeg` given just the `Element`
@@ -64,16 +60,16 @@ eNeg' :: Floating a => Element -> a
 eNeg' e = eNeg (zEff e) (rCov' e)
 
 -- | `eNeg` using a given `Species` and associated `zEffIon` and `rCovIon`
-eNegIon :: (Floating a, KnownCharge st) => Species st -> Maybe a 
-eNegIon s = eNeg <$> zEffIon s <*> rCovIon s
+eNegIon :: (Floating a, KnownCharge st) => Species st Element -> Maybe a 
+eNegIon s = eNeg (zEffIon s) <$> rCovIon s
 
 -- | `eNegAR` given just the `Element` 
 eNegAR' :: Floating a => Element -> a 
 eNegAR' e = eNegAR (zEff e) (rCov' e)
 
 -- | `eNegAR` using a given `Species` and associated `zEffIon` and `rCovIon`
-eNegARIon :: (Floating a, KnownCharge st) => Species st -> Maybe a 
-eNegARIon s = eNegAR <$> zEffIon s <*> rCovIon s
+eNegARIon :: (Floating a, KnownCharge st) => Species st Element -> Maybe a 
+eNegARIon s = eNegAR (zEffIon s) <$> rCovIon s
 
 -- | `percentIonic` given just two `Element`s 
 percentIonic' :: Floating a => Element -> Element -> a 

@@ -13,7 +13,7 @@
 {-# LANGUAGE NoStarIsType #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeFamilyDependencies #-}
-
+{-# LANGUAGE DeriveFunctor #-}
 {-|
 Module: Elements
 Description: Basic type- and value- level Elements and Ions 
@@ -37,7 +37,7 @@ module Elements
     , Species 
     , Atoms (..)
     , mkAtom
-    , asAtom
+    , asSpecies
     , IonRep (..)
     , mkIonRep
     , mkIonPoly
@@ -270,31 +270,27 @@ instance Show Atoms where
 -- | Type representing a species (i.e. in solution)
 -- Can be monatomic or binary polyatomic
 -- Polyatomic Ions are represented as two sets of `Atoms` 
-data Species (state :: Charge) = UnsafeMkSpecies Element | UnsafeMkPoly Atoms Atoms deriving Eq 
+newtype Species (state :: Charge) tp = UnsafeMkSpecies tp deriving (Eq, Functor)
 
-instance Show (Species Neutral) where 
+instance Show a => Show (Species Neutral a) where 
     show (UnsafeMkSpecies e)  = show e
-    show (UnsafeMkPoly ewc1 ewc2) = "(" ++ show ewc1 ++ show ewc2 ++ ")"
 
-instance forall a. KnownNat a => Show (Species (Pos a)) where 
+instance forall a t. (KnownNat a, Show t) => Show (Species (Pos a) t) where 
     show (UnsafeMkSpecies e) = show e ++ show (natVal $ Proxy @a) ++ "+"
-    show (UnsafeMkPoly ewc1 ewc2) = "(" ++ show ewc1 ++ show ewc2 ++ ")" ++ show (natVal $ Proxy @a) ++ "+"
 
-instance forall a. KnownNat a => Show (Species (Neg a)) where 
+instance forall a t. (KnownNat a, Show t) => Show (Species (Neg a) t) where 
     show (UnsafeMkSpecies e) = show e ++ show (natVal $ Proxy @a) ++ "-"
-    show (UnsafeMkPoly ewc1 ewc2) = "(" ++ show ewc1 ++ show ewc2 ++ ")" ++ show (natVal $ Proxy @a) ++ "-"
-
 
 -- | Reify an `Element` as a `Neutral` `Species` 
-mkAtom :: forall a. KnownElem a => Species Neutral
+mkAtom :: forall a. KnownElem a => Species Neutral Element
 mkAtom = UnsafeMkSpecies $ elemValI @a 
 
 -- | Convert an `Element` value to `Neutral` `Species` 
-asAtom :: Element -> Species Neutral 
-asAtom = UnsafeMkSpecies 
+asSpecies :: t -> Species Neutral t 
+asSpecies = UnsafeMkSpecies 
 
 -- | Useful type synonym for the (likely) common ion of a representative `Element` 
-type IonRep (e :: Element) = Species (VeToIon (ValenceE e))
+type IonRep (e :: Element) = Species (VeToIon (ValenceE e)) Element
 
 -- | Reify a representative `Element` as its common ion 
 mkIonRep :: forall a. KnownElem a => IonRep a 
@@ -308,18 +304,17 @@ mkIonPoly :: forall e1 ct1 e2 ct2 charge.
     ( KnownElem e1, KnownNat ct1  
     , KnownElem e2, KnownNat ct2
     , ValidPolar2 e1 ct1 e2 ct2 charge
-    ) => Species charge 
-mkIonPoly = UnsafeMkPoly (Atoms (elemValI @e1) (fromIntegral . natVal $ Proxy @ct1)) 
-                         (Atoms (elemValI @e2) (fromIntegral . natVal $ Proxy @ct2)) 
+    ) => Species charge (Atoms, Atoms) 
+mkIonPoly = UnsafeMkSpecies ( Atoms (elemValI @e1) (fromIntegral . natVal $ Proxy @ct1) 
+                            , Atoms (elemValI @e2) (fromIntegral . natVal $ Proxy @ct2)) 
 
 -- | Returns the value wrapped by a `Species` 
-specValue :: Species a -> Either (Atoms, Atoms) Element
+specValue :: Species a t -> t
 specValue = \case 
-    UnsafeMkSpecies a -> Right a 
-    UnsafeMkPoly a b  -> Left (a, b)
+    UnsafeMkSpecies a -> a 
 
 -- | Returns the charge of a value-level `Species` 
-specCharge :: forall a c n. (KnownNat c, c ~ NaturalCharge a, Integral n) => Species a -> n
+specCharge :: forall a c n t. (KnownNat c, c ~ NaturalCharge a, Integral n) => Species a t -> n
 specCharge _ = charge $ chargeValI @a 
 
 -- | Type-level `toAtomic`, injective  

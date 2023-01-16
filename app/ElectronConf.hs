@@ -273,16 +273,16 @@ dropElectrons n = \case
 formIon :: Int -> EConf -> EConf
 formIon n 
     | n == 0 = id 
-    | n <  0 = dropElectrons (negate n)
-    | n >  0 = addElectrons  n 
+    | n >  0 = dropElectrons n
+    | n <  0 = addElectrons  $ negate n 
 
 -- | Formation of an ion yielding just the final `Sublevel`
 -- Any `Left` value indicates just `Nucleus` 
 formIonSL :: Int -> Sublevel -> Either EConf Sublevel 
 formIonSL n 
     | n == 0 = Right 
-    | n <  0 = dropElectronsSL (negate n)
-    | n >  0 = Right . addElectronsSL  n 
+    | n >  0 = dropElectronsSL n
+    | n <  0 = Right . addElectronsSL (negate n)  
 
 -- | `anumToEConf` yielding just the final `Sublevel`
 -- Value equivalent of `ANumLastSL`
