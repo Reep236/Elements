@@ -51,4 +51,4 @@ bondEnergy' b = (b, bondEnergy b)
 -- | Display calculated `bondEnergy`/ies, combustion for acetylene  
 main :: IO()
 main = do
-    mapM_ (\e -> putStrLn $ show (toAtomic e) ++ ',' : show (eAff e)) $ [H .. Ca]
+    mapM_ (\e -> putStrLn $ show (toAtomic e) ++ ',' : show (iEnergy e)) $ [H .. Og]

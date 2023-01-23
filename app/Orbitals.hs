@@ -291,25 +291,31 @@ atomicRadiusIon = (*) a0pm . atomicRadiusIonBohr
 atomicRadiusIonBohr :: forall st a. (KnownCharge st, Fractional a) => Species st Element -> a 
 atomicRadiusIonBohr = realToFrac . maximum . orbitalRadiiIonBohr
 
-amplitudeFactorRX :: forall a. (Fractional a) => a -> Sublevel -> a 
+amplitudeFactorRX :: forall a. (Floating a) => a -> Sublevel -> a 
 amplitudeFactorRX rx = \case 
-    SubL 1 SL _     -> 1 
-    SubL _ SL _     -> 1 + (1/rx)
-    SubL _ PL e
-        | e < 4     -> 0.5*(1   + (1/rx))
-        | otherwise -> 0.5*(0.5 + (1/rx))
-    SubL _ DL e 
-        | e < 6     -> (3*rx + 2)/9
-        | otherwise -> 1.15 - 5/(9*rx)
-    SubL _ FL e
-        | e < 8     -> (2^^(-5) + (1/rx))*(2^^(-3) + 1/14)
-        | otherwise -> 1.15 - 5/(9*rx)
+    SubL 1 SL _     ->  1 
+    SubL _ SL _     ->  1   + 1/rx
+    SubL 3 PL e 
+        | e < 4     ->        1.5/rx
+        | otherwise -> -0.2 + 1.5/rx
+    SubL n PL e
+        | e < 4     -> (fromIntegral n - 1)**1.2 * (1 + (1/rx)) / fromIntegral n
+        | otherwise -> let frac = (fromIntegral n - 1)**1.2 / fromIntegral n in frac*(frac + (1/rx))  
+    SubL 3 DL e -- Unclear why n=3 is different for P and D 
+        | e < 6     -> (2.1  - 1/rx)/2
+        | otherwise -> (2.15 - 1/rx)/2
+    SubL n DL e 
+        | e < 6     -> (((fromIntegral n - 3)^^2)/(3   *rx) - ((fromIntegral n - 3)**1.55) / 1.75) + 0.59
+        | otherwise -> (((fromIntegral n - 3)^^2)/(2.95*rx) - ((fromIntegral n - 3)**1.55) / 1.7 ) + 0.59
+    SubL n FL e
+        | e < 8     -> 0.32 - 1/(17*rx) + (fromIntegral n - 4)/34
+        | otherwise -> 0.33 - 1/(17*rx) + (fromIntegral n - 4)/34
 
-amplitudeFactorRXIon :: forall a. Fractional a => Int -> a -> Sublevel -> a
+amplitudeFactorRXIon :: forall a. Floating a => Int -> a -> Sublevel -> a
 amplitudeFactorRXIon charge rx = (+) (fromIntegral charge) . amplitudeFactorRX rx 
 
 -- | Amplitude factor for a given `Element` (dimensionless)
-ampFacE :: forall a. (Fractional a) => Element -> a 
+ampFacE :: forall a. (Floating a) => Element -> a 
 ampFacE e = let z = toAtomic e 
              in case anumToEConf z of 
                   sl :<-: ec -> amplitudeFactorRX (realToFrac . last $ orbitalRadiiBohr e) sl 
