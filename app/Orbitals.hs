@@ -12,9 +12,7 @@ Description: Better atomic orbitals using Energy Wave Theory
 -}
 
 module Orbitals 
-    ( orbitalRadii
-    , orbitalRadiiIon
-    , atomicRadius
+    ( atomicRadius
     , atomicRadiusIon
     , iEnergy
     , iEnergyIon
@@ -77,9 +75,6 @@ thetas (SubL 3 SL n :<-: rem)     = V.cons ((3, n), 2/3) $ thetas rem
 thetas rem = flip V.unfoldr rem $ \case 
                 SubL pqn l e :<-: ec -> Just (((pqn, e), theta l), ec)
                 Nucleus              -> Nothing 
-
-thetasE :: Fractional a => Element -> V.Vector ((Nat, Nat), a)
-thetasE = thetas . anumToEConf . toAtomic
 
 t1Z  :: (Integral i, Fractional a) => i -> a -> a 
 t1Z  z rx = fromIntegral z / (rx ^^ 2)
@@ -147,14 +142,8 @@ rOrbExprZEC :: (Integral i, Fractional a) => i -> EConf -> V.Vector a -> V.Vecto
 rOrbExprZEC z ec rs = let ts = thetas ec 
                        in V.generate (V.length ts) $ flip (rOrbSingExprZEC z ec) rs
 
-rOrbExpr :: Fractional a => Element -> V.Vector a -> V.Vector a 
-rOrbExpr e = let z = toAtomic e in rOrbExprZEC z (anumToEConf z)
-
 rOrbJCZEC :: (Integral i, Fractional a) => i -> EConf -> V.Vector a -> V.Vector (V.Vector a)
 rOrbJCZEC z ec rs = V.generate (V.length rs) (\x -> V.generate (V.length rs) $ flip (rOrbSingExprZEC' z ec x) rs) 
-
-rOrbJC :: Fractional a => Element -> V.Vector a -> V.Vector (V.Vector a)
-rOrbJC e = let z = toAtomic e in rOrbJCZEC z (anumToEConf z)
 
 gauss :: (Fractional a, Eq a) 
       => V.Vector (V.Vector a) 
@@ -227,9 +216,6 @@ newtonRaphson j f mxI eps st = unsafePerformIO $ -- Unfortunately, a STVector of
     foldrM (\_ v -> (\n -> if maximum (V.toList n) < eps then v else V.zipWith (+) v n) 
                 <$> gauss (j v) (V.map negate $ f v)) st ([1 .. mxI] :: [Int]) 
 
-nrSoln :: forall a. (Fractional a, Ord a) => Element -> Int -> a -> V.Vector a -> V.Vector a
-nrSoln e mxI eps = V.reverse . newtonRaphson (rOrbJC e) (rOrbExpr e) mxI eps . V.reverse
-
 nrSolnZEC :: forall a i. (Integral i, Fractional a, Ord a) 
           => i -> EConf -> Int -> a -> V.Vector a -> V.Vector a 
 nrSolnZEC z ec mxI eps = V.reverse . newtonRaphson (rOrbJCZEC z ec) (rOrbExprZEC z ec) mxI eps . V.reverse 
@@ -253,16 +239,8 @@ orbitalRadiiZECBohr z ec
               . nrSolnZEC z ec 1000 1e-8 . V.fromList 
               $ approxVals z ec 
 
--- | Yields orbital radii (s1 - highest `Sublevel`) for any `Element` 
-orbitalRadii :: Element -> [Fixed E8]
-orbitalRadii = map (* a0pm) . orbitalRadiiBohr
-
 orbitalRadiiBohr :: Element -> [Fixed E8]
 orbitalRadiiBohr e = let z = toAtomic e in orbitalRadiiZECBohr z (anumToEConf z)
-
--- | Yields obirtal radii (s1 - highest `Sublevel`) for any ion 
-orbitalRadiiIon :: forall st. KnownCharge st => Species st Element -> [Fixed E8]
-orbitalRadiiIon = map (* a0pm) . orbitalRadiiIonBohr
 
 orbitalRadiiIonBohr :: forall st. KnownCharge st => Species st Element -> [Fixed E8]
 orbitalRadiiIonBohr ion = 
@@ -273,23 +251,14 @@ orbitalRadiiIonBohr ion =
 atomicRadiusZECBohr :: forall a i. (Fractional a, Integral i) => i -> EConf -> a 
 atomicRadiusZECBohr z = realToFrac . maximum . orbitalRadiiZECBohr z
 
-atomicRadiusZEC :: forall a i. (Fractional a, Integral i) => i -> EConf -> a 
-atomicRadiusZEC z = (*) a0pm . atomicRadiusZECBohr z 
-
 -- | Better estimate of atomic radius than Slater's rules can provide 
 -- Based on EWT paper; often between current calculated and empirical values in most cases 
 atomicRadius :: Fractional a => Element -> a 
-atomicRadius = (*) a0pm . atomicRadiusBohr
-
-atomicRadiusBohr :: Fractional a => Element -> a
-atomicRadiusBohr = realToFrac . maximum . orbitalRadiiBohr
+atomicRadius = (*) a0pm . realToFrac . maximum . orbitalRadiiBohr
 
 -- | `atomicRadius` for ions
 atomicRadiusIon :: forall st a. (KnownCharge st, Fractional a) => Species st Element -> a 
-atomicRadiusIon = (*) a0pm . atomicRadiusIonBohr
-
-atomicRadiusIonBohr :: forall st a. (KnownCharge st, Fractional a) => Species st Element -> a 
-atomicRadiusIonBohr = realToFrac . maximum . orbitalRadiiIonBohr
+atomicRadiusIon = (*) a0pm . realToFrac . maximum . orbitalRadiiIonBohr 
 
 amplitudeFactorRX :: forall a. (Floating a) => a -> Sublevel -> a 
 amplitudeFactorRX rx = \case 
@@ -323,16 +292,8 @@ ampFacE e = let z = toAtomic e
 constantSkeleton :: Floating a => a
 constantSkeleton = glamb*(pi*rho*(ke^^7)*(al^^6)*(c^^2)*oe)/(3*(lambl^^2))
 
-transverseE :: Floating a => a -> a -> a -> a 
-transverseE delta r0 r1 = 2*constantSkeleton*(delta/r1 - delta/r0)
-
 iEnergyAmp :: Floating a => a -> a -> a -- J
 iEnergyAmp r0 delta = -2*constantSkeleton*(-delta/(r0*a0))
-
-iEnergyZEC :: forall a i. (Floating a, Integral i) => i -> EConf -> a 
-iEnergyZEC z = \case 
-        ec@(sl :<-: _) -> let r0 = realToFrac . last $ orbitalRadiiZECBohr z ec
-                           in iEnergyAmp r0 (amplitudeFactorRX r0 sl)
 
 -- | First ionization energy for a given `Element` (kJ/mol)
 iEnergy :: Floating a => Element -> a 
@@ -346,10 +307,3 @@ iEnergyIon e = let z  = toAtomic $ specValue e
                    r0 = realToFrac . last $ orbitalRadiiIonBohr e
                    (sl :<-: _) = formIon (specCharge e) $ anumToEConf z
                 in (/ 1000) . (*) nA $ iEnergyAmp r0 (amplitudeFactorRXIon (specCharge e) r0 sl)
-
--- | Electron Affinity for a given `Element` !!! Doesn't work
--- eAff :: Floating a => Element -> a
--- eAff e = let z = toAtomic e 
---              ec@(sl :<-: _) = formIon (-1) $ anumToEConf z 
---              r0 = realToFrac . last $ orbitalRadiiZECBohr z ec 
---          in (/ 1000) . (*) nA $ iEnergyAmp r0 (amplitudeFactorRXIon (-1) r0 sl)
